@@ -17,7 +17,7 @@ export default async function TimetablePage() {
   const { favorites } = await getFavorites()
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 flex-col flex">
       <h1 className="text-2xl font-bold">Timetable</h1>
       <TimetableView days={days} stages={stages} acts={acts} favorites={favorites} />
     </div>
