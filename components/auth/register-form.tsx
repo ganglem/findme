@@ -54,6 +54,19 @@ export function RegisterForm() {
         return
       }
 
+      // Username in die Profile-Tabelle einfügen
+      if (data.user) {
+        const { error: profileError } = await supabase
+          .from("profiles")
+          .insert([{ id: data.user.id, username: username }])
+
+        if (profileError) {
+          setError("Profil konnte nicht gespeichert werden: " + profileError.message)
+          setIsLoading(false)
+          return
+        }
+      }
+
       setSuccess("Konto erstellt!")
       setIsLoading(false)
 
