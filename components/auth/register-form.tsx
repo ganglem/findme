@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
+import {generateAvatarBase64} from "@/util/avatar-utils";
 
 export function RegisterForm() {
   const [error, setError] = useState<string | null>(null)
@@ -58,6 +59,12 @@ export function RegisterForm() {
       if (data.user) {
         const { error: profileError } = await supabase
           .from("profiles")
+          .insert([{
+            id: data.user.id,
+            username: username,
+            avatar_url: generateAvatarBase64(username),
+            email: email
+          }])
           .insert([{ id: data.user.id, username: username, email: email }])
 
         if (profileError) {
