@@ -98,10 +98,7 @@ export function ProfileForm({ profile, updateProfile, uploadAvatar }: ProfileFor
           <Input id="username" name="username" defaultValue={profile?.username || ""} placeholder="dein_username" />
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="fullName">Vollständiger Name</Label>
-          <Input id="fullName" name="fullName" defaultValue={profile?.full_name || ""} placeholder="Dein Name" />
-        </div>
+        
       </div>
 
       {error && <div className="text-red-500 text-sm">{error}</div>}
