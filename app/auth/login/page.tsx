@@ -18,7 +18,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[80vh]">
-      <div className="w-full max-w-md p-8 space-y-8 bg-card rounded-lg shadow-md">
+      <div className="w-full max-w-md p-8 space-y-8 bg-card rounded-none border-4">
         <div className="text-center">
           <h1 className="text-2xl font-bold">Anmelden</h1>
           <p className="text-muted-foreground mt-2">Melde dich bei Find.me an</p>
