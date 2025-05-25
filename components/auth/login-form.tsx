@@ -1,0 +1,79 @@
+"use client"
+
+import type React from "react"
+
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { createClient } from "@/lib/supabase/client"
+
+export function LoginForm() {
+  const [error, setError] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
+  const supabase = createClient()
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    setIsLoading(true)
+    setError(null)
+
+    const formData = new FormData(event.currentTarget)
+    const email = formData.get("email") as string
+    const password = formData.get("password") as string
+
+    try {
+      // Direkte Anmeldung mit Supabase
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+
+      if (error) {
+        setError(error.message)
+        setIsLoading(false)
+        return
+      }
+
+      // Erfolgreich angemeldet, zur Startseite weiterleiten
+      console.log("Erfolgreich angemeldet, leite weiter...")
+      router.push("/")
+      router.refresh()
+    } catch (err: any) {
+      console.error("Anmeldefehler:", err)
+      setError(err.message || "Ein Fehler ist aufgetreten")
+      setIsLoading(false)
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="email">E-Mail</Label>
+        <Input id="email" name="email" type="email" placeholder="deine@email.de" required />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="password">Passwort</Label>
+        <Input id="password" name="password" type="password" placeholder="••••••••" required />
+      </div>
+
+      {error && <div className="text-red-500 text-sm">{error}</div>}
+
+      <Button type="submit" className="w-full" disabled={isLoading}>
+        {isLoading ? "Wird angemeldet..." : "Anmelden"}
+      </Button>
+
+      <div className="text-center text-sm">
+        <p>
+          Noch kein Konto?{" "}
+          <Link href="/auth/register" className="text-primary hover:underline">
+            Registrieren
+          </Link>
+        </p>
+      </div>
+    </form>
+  )
+}
