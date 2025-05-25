@@ -54,7 +54,7 @@ export function RegisterForm() {
         return
       }
 
-      setSuccess("Konto erstellt! Bitte überprüfe deine E-Mails zur Bestätigung.")
+      setSuccess("Konto erstellt!")
       setIsLoading(false)
 
       // Für Entwicklungszwecke: Automatisch anmelden und weiterleiten
