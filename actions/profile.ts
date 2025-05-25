@@ -12,7 +12,7 @@ export async function updateProfile(formData: FormData) {
   if (!user) return { error: "Not authenticated" }
 
   const username = formData.get("username") as string
-  const avatarUrl = formData.get("avatarUrl") as string
+  let avatarUrl = formData.get("avatarUrl") as string
 
   const { error } = await supabase
     .from("profiles")
