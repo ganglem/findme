@@ -1,6 +1,6 @@
 "use client"
 
-import type React from "react"
+import React, {useEffect, useState} from "react"
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -9,11 +9,18 @@ import { Home, Calendar, Radio, User } from "lucide-react"
 type NavigationProps = {}
 
 export function Navigation({}: NavigationProps) {
-  const pathname = typeof window !== "undefined" ? window.location.pathname : ""
-  // Hide navigation bar on login page
-  if (pathname.startsWith("/auth/login")) return null
+  const [isNavigationVisible, setIsNavigationVisible] = useState(true)
+  const pathname = usePathname()
 
-  return (
+  useEffect(() => {
+    if (pathname.startsWith("/auth/login") || pathname.startsWith("/auth/register")) {
+      setIsNavigationVisible(false)
+    } else {
+      setIsNavigationVisible(true)
+    }
+  }, [pathname]);
+
+  return isNavigationVisible ? (
     <nav className="fixed bottom-0 left-0 right-0 bg-background border-t border-border">
       <div className="container max-w-md mx-auto">
         <div className="flex justify-around py-2">
@@ -24,7 +31,7 @@ export function Navigation({}: NavigationProps) {
         </div>
       </div>
     </nav>
-  )
+  ): null
 }
 
 interface NavItemProps {

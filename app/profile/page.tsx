@@ -1,8 +1,9 @@
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import { ProfileForm } from "@/components/profile/profile-form"
-import { updateProfile, uploadAvatar } from "@/actions/profile"
+import { updateProfile } from "@/actions/profile"
 import { SignOutButton } from "@/components/auth/sign-out-button"
+import {Profile} from "@/lib/supabase/database.types";
 
 export default async function ProfilePage() {
   const supabase = createClient()
@@ -14,7 +15,11 @@ export default async function ProfilePage() {
     redirect("/auth/login")
   }
 
-  const { data: profile } = await supabase.from("profiles").select().eq("id", session.user.id).single()
+  const { data: profile } = await supabase.from("profiles").select().eq("id", session.user.id).single<Profile>()
+
+  if (!profile) {
+    redirect("/auth/login")
+  }
 
   return (
     <div className="space-y-8">
@@ -23,7 +28,7 @@ export default async function ProfilePage() {
         <SignOutButton />
       </div>
 
-      <ProfileForm profile={profile} updateProfile={updateProfile} uploadAvatar={uploadAvatar} />
+      <ProfileForm profile={profile} updateProfile={updateProfile} />
     </div>
   )
 }
