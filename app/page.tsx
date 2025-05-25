@@ -25,7 +25,7 @@ export default async function Home() {
     <div className="flex flex-col items-center justify-center space-y-8 pt-8">
       <div className="text-center">
         <Image
-          src="/placeholder.svg?height=150&width=150&query=ikarus+festival+logo"
+          src="/icon.svg?height=150&width=150&query=ikarus+festival+logo"
           alt="Ikarus Festival Logo"
           width={150}
           height={150}
