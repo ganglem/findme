@@ -22,10 +22,28 @@ export function LoginForm() {
     setError(null)
 
     const formData = new FormData(event.currentTarget)
-    const email = formData.get("email") as string
+    const identifier = formData.get("email") as string // can be email or username
     const password = formData.get("password") as string
 
+    let email = identifier
     try {
+      // If identifier is not an email, look up email by username
+      if (!identifier.includes("@")) {
+        // Get email from profiles by username
+        const { data: profile, error: profileError } = await supabase
+          .from("profiles")
+          .select("email")
+          .eq("username", identifier)
+          .single()
+        if (profileError || !profile?.email) {
+          setError("Benutzername oder E-Mail nicht gefunden")
+          setIsLoading(false)
+          return
+        }
+        email = profile.email
+      }
+
+      console.log("Anmeldeinformationen:", { email, password })
       // Direkte Anmeldung mit Supabase
       const { error } = await supabase.auth.signInWithPassword({
         email,
@@ -52,8 +70,8 @@ export function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="email">E-Mail</Label>
-        <Input id="email" name="email" type="email" placeholder="deine@email.de" required />
+        <Label htmlFor="email">E-Mail oder Benutzername</Label>
+        <Input id="email" name="email" type="text" placeholder="deine@email.de oder Nutzername" required />
       </div>
       <div className="space-y-2">
         <Label htmlFor="password">Passwort</Label>

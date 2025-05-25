@@ -58,7 +58,7 @@ export function RegisterForm() {
       if (data.user) {
         const { error: profileError } = await supabase
           .from("profiles")
-          .insert([{ id: data.user.id, username: username }])
+          .insert([{ id: data.user.id, username: username, email: email }])
 
         if (profileError) {
           setError("Profil konnte nicht gespeichert werden: " + profileError.message)
