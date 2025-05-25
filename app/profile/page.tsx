@@ -17,13 +17,14 @@ export default async function ProfilePage() {
   const { data: profile } = await supabase.from("profiles").select().eq("id", session.user.id).single()
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 flex-col flex">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Mein Profil</h1>
         <SignOutButton />
       </div>
-
-      <ProfileForm profile={profile} updateProfile={updateProfile} uploadAvatar={uploadAvatar} />
+      <div className="w-full lex flex-col justify-center pt-10">
+        <ProfileForm profile={profile} updateProfile={updateProfile} uploadAvatar={uploadAvatar} />
+      </div>
     </div>
   )
 }
