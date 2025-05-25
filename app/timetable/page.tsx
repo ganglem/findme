@@ -9,7 +9,7 @@ export default async function TimetablePage() {
     data: { session },
   } = await supabase.auth.getSession()
 
-  if (!session) {
+    if (!session) {
     redirect("/auth/login")
   }
 
@@ -51,7 +51,7 @@ export default async function TimetablePage() {
   ]
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 flex-col flex">
       <h1 className="text-2xl font-bold">Timetable</h1>
       <TimetableView days={days} stages={stages} acts={acts} favorites={favorites} />
     </div>

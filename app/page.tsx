@@ -31,28 +31,28 @@ export default async function Home() {
           height={150}
           className="mx-auto mb-4"
         />
-        <h1 className="text-3xl font-bold mb-2">Find.me</h1>
-        <p className="text-muted-foreground">Dein Guide für das Ikarus Festival</p>
+        <h1 className="text-8xl font-bold mb-2">Find.me</h1>
+        <p className="text-muted-foreground text-lg">Dein Guide für das Ikarus Festival</p>
       </div>
 
       <div className="grid grid-cols-2 gap-4 w-full">
         <Link href="/timetable" className="w-full">
           <Button variant="outline" className="w-full h-32 flex flex-col">
-            <Calendar className="h-8 w-8 mb-2" />
+            <Calendar className="h-12 w-12 mb-2" />
             <span>Timetable</span>
           </Button>
         </Link>
 
         <Link href="/live" className="w-full">
           <Button variant="outline" className="w-full h-32 flex flex-col">
-            <Radio className="h-8 w-8 mb-2" />
+            <Radio className="h-12 w-12 mb-2" />
             <span>Live Tracker</span>
           </Button>
         </Link>
 
         <Link href="/profile" className="w-full col-span-2">
           <Button variant="outline" className="w-full h-24 flex flex-col">
-            <User className="h-8 w-8 mb-2" />
+            <User className="h-12 w-12 mb-2" />
             <span>Mein Profil</span>
           </Button>
         </Link>

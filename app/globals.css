@@ -2,58 +2,118 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Adobe Fonts integration */
+@font-face {
+  font-family: "nexa-rust-sans-black-2";
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: local("nexa-rust-sans-black-2"), url("https://use.typekit.net/exp6oyj.css");
+}
+
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --font-nexa: "nexa-rust-sans-black-2", sans-serif;
+
+    /* Light mode colors */
+    --background: 24 95% 55%;
+    --foreground: 0 0% 100%;
+    --card: transparent;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 24 95% 55%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 24 100% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 15 80% 40%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 30 80% 60%;
+    --muted-foreground: 0 0% 20%;
+
+    --accent: 30 80% 60%;
+    --accent-foreground: 0 0% 0%;
+
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 100%;
+    --input: 0 0% 100%;
+    --ring: 0 0% 100%;
+
     --radius: 0.5rem;
   }
 
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
+
+    --card: transparent;
     --card-foreground: 210 40% 98%;
+
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
+
     --primary: 217.2 91.2% 59.8%;
     --primary-foreground: 222.2 47.4% 11.2%;
+
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
+
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
+
     --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 210 40% 98%;
+
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
+
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 224.3 76.3% 48%;
   }
-}
 
-@layer base {
-  * {
+  *, ::before, ::after {
+    font-family: var(--font-nexa) !important;
+    font-weight: 900 !important;
     @apply border-border;
   }
+
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
+    background: linear-gradient(to bottom, #fb7922, #fca72c);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+  }
+
+  h1, h2, h3, h4, h5, h6,
+  nav,
+  button,
+  select,
+  textarea,
+  .card,
+  .card-content {
+    font-family: var(--font-nexa);
+    font-weight: 900;
+  }
+}
+
+  input,
+  select,
+  textarea {
+  font-family: sans-serif !important;
+  font-weight: normal !important;
+}
+
+
+
+@layer utilities {
+  .font-nexa {
+    font-family: var(--font-nexa);
+    font-weight: 900;
   }
 }

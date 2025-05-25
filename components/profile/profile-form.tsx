@@ -80,7 +80,7 @@ export function ProfileForm({ profile, updateProfile }: ProfileFormProps) {
           />
           <Label
             htmlFor="avatar"
-            className="flex items-center justify-center px-4 py-2 text-sm border rounded-md cursor-pointer hover:bg-accent"
+            className="flex items-center justify-center px-4 py-2 text-sm border-2 rounded-none cursor-pointer hover:bg-transparent hover:opacity-70"
           >
             <Upload className="w-4 h-4 mr-2" />
             Profilbild ändern
@@ -91,19 +91,20 @@ export function ProfileForm({ profile, updateProfile }: ProfileFormProps) {
       <div className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="username">Benutzername</Label>
-          <Input id="username" name="username" defaultValue={profile?.username || ""} placeholder="dein_username" />
+          <Input id="username" className="placeholder:opacity-70" name="username" defaultValue={profile?.username || ""} placeholder="dein_username" />
         </div>
-
-        
       </div>
 
       {error && <div className="text-red-500 text-sm">{error}</div>}
 
       {success && <div className="text-green-500 text-sm">Profil erfolgreich aktualisiert!</div>}
 
-      <Button type="submit" className="w-full" disabled={isLoading}>
-        {isLoading ? "Wird gespeichert..." : "Profil speichern"}
-      </Button>
+      <div className="justify-center flex py-4">
+        <Button type="submit" variant="outline" disabled={isLoading}>
+          {isLoading ? "Wird gespeichert..." : "Profil speichern"}
+        </Button>
+      </div>
+
     </form>
   )
 }

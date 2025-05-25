@@ -22,13 +22,14 @@ export default async function ProfilePage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 flex-col flex">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Mein Profil</h1>
         <SignOutButton />
       </div>
-
-      <ProfileForm profile={profile} updateProfile={updateProfile} />
+      <div className="w-full flex flex-col justify-center pt-10">
+        <ProfileForm profile={profile} updateProfile={updateProfile} />
+      </div>
     </div>
   )
 }

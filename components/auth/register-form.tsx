@@ -94,23 +94,25 @@ export function RegisterForm() {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2">
         <Label htmlFor="username">Benutzername</Label>
-        <Input id="username" name="username" type="text" placeholder="dein_username" required />
+        <Input className="placeholder:opacity-70" id="username" name="username" type="text" placeholder="dein_username" required />
       </div>
       <div className="space-y-2">
         <Label htmlFor="email">E-Mail</Label>
-        <Input id="email" name="email" type="email" placeholder="deine@email.de" required />
+        <Input className="placeholder:opacity-70" id="email" name="email" type="email" placeholder="deine@email.de" required />
       </div>
       <div className="space-y-2">
         <Label htmlFor="password">Passwort</Label>
-        <Input id="password" name="password" type="password" placeholder="••••••••" required minLength={6} />
+        <Input className="placeholder:opacity-70" id="password" name="password" type="password" placeholder="••••••••" required minLength={6} />
       </div>
 
       {error && <div className="text-red-500 text-sm">{error}</div>}
       {success && <div className="text-green-500 text-sm">{success}</div>}
 
-      <Button type="submit" className="w-full" disabled={isLoading}>
-        {isLoading ? "Wird registriert..." : "Registrieren"}
-      </Button>
+      <div className="py-4 w-full flex justify-center">
+        <Button type="submit" variant="outline" disabled={isLoading}>
+          {isLoading ? "Wird registriert..." : "Jetzt registrieren"}
+        </Button>
+      </div>
 
       <div className="text-center text-sm">
         <p>

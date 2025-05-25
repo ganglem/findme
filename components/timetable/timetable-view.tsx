@@ -48,9 +48,9 @@ export function TimetableView({ days, stages, acts, favorites: initialFavorites 
 
         {days.map((day) => (
           <TabsContent key={day.name} value={day.name} className="space-y-4">
-            <div className="flex overflow-x-auto pb-2 space-x-2">
+            <div className="flex flex-wrap gap-x-4 gap-y-2 pb-2">
               <Button
-                variant={activeStage === null ? "default" : "outline"}
+                variant={activeStage === null ? "outline" : "tab"}
                 size="sm"
                 onClick={() => setActiveStage(null)}
               >
@@ -60,7 +60,7 @@ export function TimetableView({ days, stages, acts, favorites: initialFavorites 
               {stages.map((stage) => (
                 <Button
                   key={stage.id}
-                  variant={activeStage === stage.id ? "default" : "outline"}
+                  variant={activeStage === stage.id ? "outline" : "tab"}
                   size="sm"
                   onClick={() => setActiveStage(stage.id)}
                 >
@@ -80,7 +80,7 @@ export function TimetableView({ days, stages, acts, favorites: initialFavorites 
                   />
                 ))
               ) : (
-                <p className="text-center text-muted-foreground py-8">
+                <p className="text-center text-muted-foreground">
                   Keine Acts gefunden für diesen Tag und diese Stage.
                 </p>
               )}
@@ -133,22 +133,21 @@ function ActCard({ act, isFavorite, onToggleFavorite, showDay = false }: ActCard
   return (
     <Card>
       <CardContent className="p-4">
-        <div className="flex justify-between items-start">
-          <div>
+        <div className="flex justify-between items-center">
+          <div className="flex flex-col">
             <div className="font-bold">{act.artist}</div>
             <div className="text-sm text-muted-foreground">
               {act.time} • {act.stage}
               {showDay && ` • ${act.day}`}
             </div>
           </div>
-
           <Button
             variant="ghost"
             size="icon"
             onClick={onToggleFavorite}
-            className={isFavorite ? "text-red-500" : "text-muted-foreground"}
+            className={isFavorite ? "text-foreground" : "text-muted-foreground"}
           >
-            <Heart className={isFavorite ? "fill-current" : ""} />
+            <Heart className={isFavorite ? "fill-current" : ""} width={32} height={32} />
           </Button>
         </div>
       </CardContent>
