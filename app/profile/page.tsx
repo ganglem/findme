@@ -28,7 +28,7 @@ export default async function ProfilePage() {
         <SignOutButton />
       </div>
       <div className="w-full flex flex-col justify-center pt-10">
-        <ProfileForm profile={profile} updateProfile={updateProfile} uploadAvatar={uploadAvatar} />
+        <ProfileForm profile={profile} updateProfile={updateProfile} />
       </div>
     </div>
   )

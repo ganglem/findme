@@ -30,7 +30,7 @@ export function Navigation({}: NavigationProps) {
           </div>
         </div>
       </nav>
-  )
+  ) : null
 }
 
 interface NavItemProps {
