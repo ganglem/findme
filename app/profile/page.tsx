@@ -27,7 +27,7 @@ export default async function ProfilePage() {
         <h1 className="text-2xl font-bold">Mein Profil</h1>
         <SignOutButton />
       </div>
-      <div className="w-full lex flex-col justify-center pt-10">
+      <div className="w-full flex flex-col justify-center pt-10">
         <ProfileForm profile={profile} updateProfile={updateProfile} uploadAvatar={uploadAvatar} />
       </div>
     </div>
