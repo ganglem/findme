@@ -9,7 +9,9 @@ import { Home, Calendar, Radio, User } from "lucide-react"
 type NavigationProps = {}
 
 export function Navigation({}: NavigationProps) {
-  const pathname = usePathname()
+  const pathname = typeof window !== "undefined" ? window.location.pathname : ""
+  // Hide navigation bar on login page
+  if (pathname.startsWith("/auth/login")) return null
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-background border-t border-border">
