@@ -23,7 +23,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <div className="flex flex-col min-h-screen">
-            <main className="flex-1 container max-w-md mx-auto px-4 py-8">{children}</main>
+            <main className="flex-1 container max-w-md mx-auto px-4 py-8 pb-[90px]">{children}</main>
             <Navigation />
           </div>
         </ThemeProvider>
