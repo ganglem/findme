@@ -65,7 +65,6 @@ export function RegisterForm() {
             avatar_url: generateAvatarBase64(username),
             email: email
           }])
-          .insert([{ id: data.user.id, username: username, email: email }])
 
         if (profileError) {
           setError("Profil konnte nicht gespeichert werden: " + profileError.message)
