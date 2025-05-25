@@ -10,7 +10,7 @@ export default async function TimetablePage() {
     data: { session },
   } = await supabase.auth.getSession()
 
-  if (!session) {
+    if (!session) {
     redirect("/auth/login")
   }
 
