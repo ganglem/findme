@@ -33,6 +33,7 @@ export const stages: Stage[] = [
   { id: 7, name: "Medusa Jungle", description: "Spirit Test" },
 ]
 
+
 export const acts: Act[] = [
   // Samstag - Olymp Stage
   { id: 1, artist: "BEACHBAG", time: "16:00", stage: "Olymp Stage", day: "Samstag" },

@@ -10,49 +10,55 @@ import { createClient } from "@/lib/supabase/client"
 import { MapPin, Clock } from "lucide-react"
 
 interface ExtendedStage extends Stage {
-    currentAct: Act | null
-    nextAct: Act | null
+  currentAct: Act | null
+  nextAct: Act | null
 }
 
 interface UserLocation {
-    user_id: string
-    stage_id: number
-    profiles: {
-        username: string | null
-        avatar_url: string | null
-    }
-    stages: {
-        name: string
-    }
+  user_id: string
+  stage_id: number
+  profiles: {
+    username: string | null
+    avatar_url: string | null
+  }
+  stages: {
+    name: string
+  }
 }
 
 interface LiveTrackerProps {
-    stages: ExtendedStage[]
-    locations: UserLocation[]
-    userId: string
+  stages: ExtendedStage[]
+  locations: UserLocation[]
+  userId: string
 }
 
 export function LiveTracker({ stages, locations: initialLocations, userId }: LiveTrackerProps) {
-    const [activeStage, setActiveStage] = useState<number | null>(null)
-    const [locations, setLocations] = useState<UserLocation[]>(initialLocations)
-    const [isUpdating, setIsUpdating] = useState(false)
+  const [activeStage, setActiveStage] = useState<number | null>(null)
+  const [locations, setLocations] = useState<UserLocation[]>(initialLocations)
+  const [isUpdating, setIsUpdating] = useState(false)
+  const campingStage = {
+      id: 8, // Make sure this ID does not conflict with real stage IDs
+      name: "Campingplatz"
+  };
 
-    const supabase = createClient()
+  const supabase = createClient()
 
-    useEffect(() => {
-        const channel = supabase
-            .channel("user_locations_changes")
-            .on(
-                "postgres_changes",
-                {
-                    event: "*",
-                    schema: "public",
-                    table: "user_locations",
-                },
-                async () => {
-                    const { data } = await supabase
-                        .from("user_locations")
-                        .select(`
+  useEffect(() => {
+    // Abonniere Änderungen an der user_locations Tabelle
+    const channel = supabase
+      .channel("user_locations_changes")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "user_locations",
+        },
+        async () => {
+          // Hole aktualisierte Standorte
+          const { data } = await supabase
+            .from("user_locations")
+            .select(`
               user_id,
               stage_id,
               profiles:user_id (
@@ -63,35 +69,56 @@ export function LiveTracker({ stages, locations: initialLocations, userId }: Liv
                 name
               )
             `)
-                        .order("timestamp", { ascending: false })
+            .order("timestamp", { ascending: false })
 
-                    if (data) {
-                        setLocations(data as UserLocation[])
-                    }
-                }
-            )
-            .subscribe()
+          if (data) {
+            setLocations(data as UserLocation[])
+          }
+        },
+      )
+      .subscribe()
 
-        return () => {
-            supabase.removeChannel(channel)
-        }
-    }, [supabase])
-
-    const handleUpdateLocation = async (stageId: number) => {
-        setIsUpdating(true)
-        setActiveStage(stageId)
-
-        await updateLocation(stageId)
-
-        setIsUpdating(false)
+    return () => {
+      supabase.removeChannel(channel)
     }
+  }, [supabase])
+
+  const handleUpdateLocation = async (stageId: number) => {
+    setIsUpdating(true)
+    setActiveStage(stageId)
+
+    await updateLocation(stageId)
+
+    setIsUpdating(false)
+  }
 
     const userLocation = locations.find((loc) => loc.user_id === userId)
 
-    return (
+      return (
         <div className="space-y-8">
-            <div className="space-y-4">
-                <h2 className="text-xl font-semibold">Aktuelle Acts</h2>
+          <div className="space-y-4">
+              {/* Campingplatz tile */}
+              {campingStage && (
+                <Card key={campingStage.id}>
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-lg flex justify-between">
+                      <span>{campingStage.name}</span>
+                      <Button
+                        variant={userLocation?.stage_id === campingStage.id ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => handleUpdateLocation(campingStage.id)}
+                        disabled={isUpdating}
+                      >
+                        <MapPin className="w-4 h-4 mr-2" />
+                        {userLocation?.stage_id === campingStage.id ? "Ich bin hier" : "Hier bin ich"}
+                      </Button>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                  </CardContent>
+                </Card>
+              )}
+            <h2 className="text-xl font-semibold">Aktuelle Acts</h2>
 
                 <div className="grid gap-4 items-start">
                     {stages.map((stage) => (
