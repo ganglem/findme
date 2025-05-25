@@ -56,12 +56,6 @@ export default async function Home() {
             <span>Mein Profil</span>
           </Button>
         </Link>
-
-        <Link href="/debug" className="w-full col-span-2">
-          <Button variant="outline" className="w-full">
-            Debug-Informationen
-          </Button>
-        </Link>
       </div>
     </div>
   )
