@@ -50,7 +50,7 @@ export function TimetableView({ days, stages, acts, favorites: initialFavorites 
           <TabsContent key={day.name} value={day.name} className="space-y-4">
             <div className="flex overflow-x-auto pb-2 space-x-2">
               <Button
-                variant={activeStage === null ? "default" : "outline"}
+                variant={activeStage === null ? "outline" : "tab"}
                 size="sm"
                 onClick={() => setActiveStage(null)}
               >
@@ -60,7 +60,7 @@ export function TimetableView({ days, stages, acts, favorites: initialFavorites 
               {stages.map((stage) => (
                 <Button
                   key={stage.id}
-                  variant={activeStage === stage.id ? "default" : "outline"}
+                  variant={activeStage === stage.id ? "outline" : "tab"}
                   size="sm"
                   onClick={() => setActiveStage(stage.id)}
                 >
