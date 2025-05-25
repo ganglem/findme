@@ -1,4 +1,9 @@
-# Find.me Festival Timetable App
+<p>
+ <img src="public/icon.svg" width="60" align="left" hspace="5">
+ <p>
+   <h1><a>Find.me Festival Timetable App</a></h1>
+ </p>
+</p>
 
 This project is a modern web application for managing and viewing a festival timetable, built with Next.js, React, and Supabase. It allows users to:
 
@@ -23,6 +28,11 @@ This project is a modern web application for managing and viewing a festival tim
   - See which acts are currently playing on each stage
 
 ## Tech Stack
+
+<p align="left">
+<img src="https://skillicons.dev/icons?i=next,react,supabase,docker,ts,tailwind"/>
+</p>
+
 - [Next.js](https://nextjs.org/) (App Router)
 - [React](https://react.dev/)
 - [Supabase](https://supabase.com/) (Database & Auth)
