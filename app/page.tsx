@@ -32,7 +32,7 @@ export default async function Home() {
           className="mx-auto mb-4"
         />
         <h1 className="text-8xl font-bold mb-2">Find.me</h1>
-        <p className="text-muted-foreground">Dein Guide für das Ikarus Festival</p>
+        <p className="text-muted-foreground text-lg">Dein Guide für das Ikarus Festival</p>
       </div>
 
       <div className="grid grid-cols-2 gap-4 w-full">
