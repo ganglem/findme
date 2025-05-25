@@ -13,10 +13,9 @@ import { Upload } from "lucide-react"
 interface ProfileFormProps {
   profile: Profile
   updateProfile: (formData: FormData) => Promise<{ error?: string; success?: boolean }>
-  uploadAvatar: (file: File) => Promise<{ error?: string; url?: string }>
 }
 
-export function ProfileForm({ profile, updateProfile, uploadAvatar }: ProfileFormProps) {
+export function ProfileForm({ profile, updateProfile }: ProfileFormProps) {
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -35,7 +34,12 @@ export function ProfileForm({ profile, updateProfile, uploadAvatar }: ProfileFor
       formData.append("avatarUrl", avatarUrl)
     }
 
-    const result = await updateProfile(formData)
+    const result = await updateProfile(formData).catch((error) => {
+      if (error.message.includes("Body exceeded 1 MB limit.")) {
+        setError("Das hochgeladene Bild ist zu groß. Bitte wähle ein kleineres Bild.")
+        setIsLoading(false)
+      }
+    })
 
     if (result?.error) {
       setError(result.error)
@@ -46,23 +50,15 @@ export function ProfileForm({ profile, updateProfile, uploadAvatar }: ProfileFor
     setIsLoading(false)
   }
 
-  async function handleAvatarChange(event: React.ChangeEvent<HTMLInputElement>) {
-    if (!event.target.files || event.target.files.length === 0) {
-      return
+  function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        setAvatarUrl(e.target?.result as string)
+      }
+      reader.readAsDataURL(file)
     }
-
-    const file = event.target.files[0]
-    setIsLoading(true)
-
-    const result = await uploadAvatar(file)
-
-    if (result?.error) {
-      setError(result.error)
-    } else if (result?.url) {
-      setAvatarUrl(result.url)
-    }
-
-    setIsLoading(false)
   }
 
   return (
@@ -96,11 +92,6 @@ export function ProfileForm({ profile, updateProfile, uploadAvatar }: ProfileFor
         <div className="space-y-2">
           <Label htmlFor="username">Benutzername</Label>
           <Input id="username" className="placeholder:opacity-70" name="username" defaultValue={profile?.username || ""} placeholder="dein_username" />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="fullName">Vollständiger Name</Label>
-          <Input id="fullName" className="placeholder:opacity-70" name="fullName" defaultValue={profile?.full_name || ""} placeholder="Dein Name" />
         </div>
       </div>
 

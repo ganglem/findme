@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
+import {generateAvatarBase64} from "@/util/avatar-utils";
 
 export function RegisterForm() {
   const [error, setError] = useState<string | null>(null)
@@ -52,6 +53,24 @@ export function RegisterForm() {
         setError("Diese E-Mail-Adresse wird bereits verwendet")
         setIsLoading(false)
         return
+      }
+
+      // Username in die Profile-Tabelle einfügen
+      if (data.user) {
+        const { error: profileError } = await supabase
+          .from("profiles")
+          .insert([{
+            id: data.user.id,
+            username: username,
+            avatar_url: generateAvatarBase64(username),
+            email: email
+          }])
+
+        if (profileError) {
+          setError("Profil konnte nicht gespeichert werden: " + profileError.message)
+          setIsLoading(false)
+          return
+        }
       }
 
       setSuccess("Konto erstellt!")

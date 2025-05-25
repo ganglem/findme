@@ -14,9 +14,8 @@ export async function middleware(req: NextRequest) {
 
   // Definiere geschützte und öffentliche Routen
   const isAuthRoute = req.nextUrl.pathname.startsWith("/auth")
-  const isSetupRoute = req.nextUrl.pathname.startsWith("/setup")
   const isApiRoute = req.nextUrl.pathname.startsWith("/api")
-  const isPublicRoute = isAuthRoute || isSetupRoute || isApiRoute || req.nextUrl.pathname === "/"
+  const isPublicRoute = isAuthRoute || isApiRoute
 
   // Debugging-Informationen
   console.log("Middleware:", {
