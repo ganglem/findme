@@ -36,6 +36,10 @@ export function LiveTracker({ stages, locations: initialLocations, userId }: Liv
   const [activeStage, setActiveStage] = useState<number | null>(null)
   const [locations, setLocations] = useState<UserLocation[]>(initialLocations)
   const [isUpdating, setIsUpdating] = useState(false)
+  const campingStage = {
+  id: 8, // Make sure this ID does not conflict with real stage IDs
+  name: "Campingplatz"
+  };
 
   const supabase = createClient()
 
@@ -94,6 +98,27 @@ export function LiveTracker({ stages, locations: initialLocations, userId }: Liv
   return (
     <div className="space-y-8">
       <div className="space-y-4">
+          {/* Campingplatz tile */}
+          {campingStage && (
+            <Card key={campingStage.id}>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-lg flex justify-between">
+                  <span>{campingStage.name}</span>
+                  <Button
+                    variant={userLocation?.stage_id === campingStage.id ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => handleUpdateLocation(campingStage.id)}
+                    disabled={isUpdating}
+                  >
+                    <MapPin className="w-4 h-4 mr-2" />
+                    {userLocation?.stage_id === campingStage.id ? "Ich bin hier" : "Hier bin ich"}
+                  </Button>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+              </CardContent>
+            </Card>
+          )}
         <h2 className="text-xl font-semibold">Aktuelle Acts</h2>
 
         <div className="grid gap-4">
@@ -155,10 +180,37 @@ export function LiveTracker({ stages, locations: initialLocations, userId }: Liv
         <h2 className="text-xl font-semibold">Wer ist wo?</h2>
 
         <div className="grid gap-4">
+          <Card key={campingStage.id}>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg">{campingStage.name}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {locations.filter((loc) => loc.stage_id === campingStage.id).length > 0 ? (
+                <div className="flex flex-wrap gap-2">
+                  {locations
+                    .filter((loc) => loc.stage_id === campingStage.id)
+                    .map((location) => (
+                      <Avatar key={location.user_id}>
+                        <AvatarImage
+                          src={location.profiles.avatar_url || undefined}
+                          alt={location.profiles.username || "User"}
+                        />
+                        <AvatarFallback>
+                          {location.profiles.username?.[0]?.toUpperCase() || "U"}
+                        </AvatarFallback>
+                      </Avatar>
+                    ))}
+                </div>
+              ) : (
+                <div className="text-sm text-muted-foreground">Niemand ist aktuell hier</div>
+              )}
+            </CardContent>
+          </Card>
           {stages.map((stage) => {
             const usersAtStage = locations.filter((loc) => loc.stage_id === stage.id)
 
             return (
+              
               <Card key={stage.id}>
                 <CardHeader className="pb-2">
                   <CardTitle className="text-lg">{stage.name}</CardTitle>
