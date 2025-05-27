@@ -9,6 +9,9 @@ import { Label } from "@/components/ui/label"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import type { Profile } from "@/lib/supabase/database.types"
 import { Upload } from "lucide-react"
+import deleteUser from "@/actions/delete-user";
+import {useRouter} from "next/navigation";
+import {createClient} from "@/lib/supabase/client";
 
 interface ProfileFormProps {
   profile: Profile
@@ -20,6 +23,7 @@ export function ProfileForm({ profile, updateProfile }: ProfileFormProps) {
   const [success, setSuccess] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState(false)
   const [avatarUrl, setAvatarUrl] = useState<string | null>(profile?.avatar_url)
+  const router = useRouter()
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -102,6 +106,37 @@ export function ProfileForm({ profile, updateProfile }: ProfileFormProps) {
       <div className="justify-center flex py-4">
         <Button type="submit" variant="outline" disabled={isLoading}>
           {isLoading ? "Wird gespeichert..." : "Profil speichern"}
+        </Button>
+      </div>
+
+      <div className="justify-center flex pb-4">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={async () => {
+            if (window.confirm("Bitte bestätigen: Möchtest du dein Profil wirklich löschen?")) {
+              setIsLoading(true)
+              setError(null)
+              try {
+                const supabase = createClient()
+                const { signOutError } = await supabase.auth.signOut()
+                if (signOutError) {
+                  throw new Error("Fehler beim Abmelden: " + signOutError.message)
+                }
+                deleteUser(profile.id).then(() => {
+                  router.push("/auth/login?message=" + encodeURIComponent("Profil gelöscht."))
+                  router.refresh()
+                }).catch((error) => {
+                  setError("Fehler beim Löschen des Profils: " + error.message)
+                })
+              } catch (err: any) {
+                setError(err.message || "Unbekannter Fehler beim Löschen.")
+              }
+              setIsLoading(false)
+            }
+          }}
+        >
+          Profil löschen
         </Button>
       </div>
 
