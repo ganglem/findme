@@ -43,7 +43,6 @@ export function LoginForm() {
         email = profile.email
       }
 
-      console.log("Anmeldeinformationen:", { email, password })
       // Direkte Anmeldung mit Supabase
       const { error } = await supabase.auth.signInWithPassword({
         email,
