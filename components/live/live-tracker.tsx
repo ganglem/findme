@@ -40,11 +40,6 @@ export function LiveTracker({stages, locations: initialLocations, userId}: LiveT
                         ...stages.filter((stage) => stage.name.toLowerCase() === "campingplatz"),
                         ...stages.filter((stage) => stage.name.toLowerCase() !== "campingplatz"),
                         ];
-    const campingStage = {
-        id: 8, // Make sure this ID does not conflict with real stage IDs
-        name: "Campingplatz"
-    };
-
     const supabase = createClient()
 
     useEffect(() => {
