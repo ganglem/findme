@@ -40,11 +40,6 @@ export function LiveTracker({stages, locations: initialLocations, userId}: LiveT
                         ...stages.filter((stage) => stage.name.toLowerCase() === "campingplatz"),
                         ...stages.filter((stage) => stage.name.toLowerCase() !== "campingplatz"),
                         ];
-    const campingStage = {
-        id: 8, // Make sure this ID does not conflict with real stage IDs
-        name: "Campingplatz"
-    };
-
     const supabase = createClient()
 
     useEffect(() => {
@@ -149,7 +144,7 @@ export function LiveTracker({stages, locations: initialLocations, userId}: LiveT
                                         )}
                                     </div>
                                     {/* Right column: Button and avatars */}
-                                    <div className="flex flex-col items-end justify-between min-w-[100px] h-full">
+                                    <div className="flex flex-col items-end justify-between min-w-[100px] h-full w-full">
                                         <Button
                                             variant={userLocation?.stage_id === stage.id ? "default" : "outline"}
                                             className="gap-1 p-1 flex flex-col items-center h-16 mb-4"
