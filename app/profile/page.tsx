@@ -17,10 +17,6 @@ export default async function ProfilePage() {
 
   const { data: profile } = await supabase.from("profiles").select().eq("id", session.user.id).single<Profile>()
 
-  if (!profile) {
-    redirect("/auth/login")
-  }
-
   return (
     <div className="space-y-8 flex-col flex">
       <div className="flex justify-between items-center">
