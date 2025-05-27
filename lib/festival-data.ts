@@ -31,6 +31,7 @@ export const stages: Stage[] = [
   { id: 5, name: "Hade Cage", description: "Hosted by Neosignal" },
   { id: 6, name: "Onos Stage", description: "Hosted by Recordings" },
   { id: 7, name: "Medusa Jungle", description: "Spirit Test" },
+  { id: 8, name: "Campingplatz", description: "Campierung" },
 ]
 
 
