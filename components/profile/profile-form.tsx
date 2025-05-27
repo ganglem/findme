@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-import { createClient } from "@supabase/auth-helpers-nextjs"
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
@@ -10,6 +9,9 @@ import { Label } from "@/components/ui/label"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import type { Profile } from "@/lib/supabase/database.types"
 import { Upload } from "lucide-react"
+import deleteUser from "@/actions/delete-user";
+import {useRouter} from "next/navigation";
+import {createClient} from "@/lib/supabase/client";
 
 interface ProfileFormProps {
   profile: Profile
@@ -21,6 +23,7 @@ export function ProfileForm({ profile, updateProfile }: ProfileFormProps) {
   const [success, setSuccess] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState(false)
   const [avatarUrl, setAvatarUrl] = useState<string | null>(profile?.avatar_url)
+  const router = useRouter()
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -115,14 +118,17 @@ export function ProfileForm({ profile, updateProfile }: ProfileFormProps) {
               setIsLoading(true)
               setError(null)
               try {
-                const supabase = createClient(supabase_url, service_role_key, {  auth: {    autoRefreshToken: false,    persistSession: false  }})
-                const { data, error } = await supabase.auth.admin.deleteUser(profile.id)
-                if (error) {
-                  setError("Fehler beim Löschen des Profils: " + error.message)
-                } else {
-                  // Optional: redirect or show success
-                  window.location.href = "/auth/login?message=" + encodeURIComponent("Profil gelöscht.")
+                const supabase = createClient()
+                const { signOutError } = await supabase.auth.signOut()
+                if (signOutError) {
+                  throw new Error("Fehler beim Abmelden: " + signOutError.message)
                 }
+                deleteUser(profile.id).then(() => {
+                  router.push("/auth/login?message=" + encodeURIComponent("Profil gelöscht."))
+                  router.refresh()
+                }).catch((error) => {
+                  setError("Fehler beim Löschen des Profils: " + error.message)
+                })
               } catch (err: any) {
                 setError(err.message || "Unbekannter Fehler beim Löschen.")
               }
