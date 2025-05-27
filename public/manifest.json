@@ -1,0 +1,18 @@
+{
+  "short_name": "Find.me",
+  "name": "Find.me",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "logo.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any maskable"
+    }
+  ],
+  "background_color": "#292C33",
+  "theme_color": "#292C33",
+  "display": "standalone",
+  "scope": "/",
+  "description": "Web App zum Selbstorganisieren aufm Ikarus Festival 2025"
+}
