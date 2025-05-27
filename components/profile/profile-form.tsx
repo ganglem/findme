@@ -1,6 +1,7 @@
 "use client"
 
 import type React from "react"
+import { createClient } from "@supabase/auth-helpers-nextjs"
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
@@ -102,6 +103,34 @@ export function ProfileForm({ profile, updateProfile }: ProfileFormProps) {
       <div className="justify-center flex py-4">
         <Button type="submit" variant="outline" disabled={isLoading}>
           {isLoading ? "Wird gespeichert..." : "Profil speichern"}
+        </Button>
+      </div>
+
+      <div className="justify-center flex pb-4">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={async () => {
+            if (window.confirm("Bitte bestätigen: Möchtest du dein Profil wirklich löschen?")) {
+              setIsLoading(true)
+              setError(null)
+              try {
+                const supabase = createClient(supabase_url, service_role_key, {  auth: {    autoRefreshToken: false,    persistSession: false  }})
+                const { data, error } = await supabase.auth.admin.deleteUser(profile.id)
+                if (error) {
+                  setError("Fehler beim Löschen des Profils: " + error.message)
+                } else {
+                  // Optional: redirect or show success
+                  window.location.href = "/auth/login?message=" + encodeURIComponent("Profil gelöscht.")
+                }
+              } catch (err: any) {
+                setError(err.message || "Unbekannter Fehler beim Löschen.")
+              }
+              setIsLoading(false)
+            }
+          }}
+        >
+          Profil löschen
         </Button>
       </div>
 
