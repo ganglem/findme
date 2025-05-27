@@ -10,7 +10,7 @@ services:
     restart: unless-stopped
     labels:
       - traefik.enable=true
-      - traefik.http.routers.find-me-router.rule=Host(`www.find.me`) || Host(`find.me`)
+      - traefik.http.routers.find-me-router.rule=Host(`www.festival-find.me`) || Host(`festival-find.me`)
       - traefik.http.routers.find-me-router.entrypoints=websecure
       - traefik.http.routers.find-me-router.tls=true
       - traefik.http.routers.find-me-router.tls.certresolver=lets-encrypt
