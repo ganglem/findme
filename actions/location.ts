@@ -36,6 +36,7 @@ export async function getUserLocations() {
     .select(`
       user_id,
       stage_id,
+      timestamp,
       profiles:user_id (
         username,
         avatar_url

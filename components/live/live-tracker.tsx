@@ -8,6 +8,7 @@ import type {Stage, Act} from "@/lib/festival-data"
 import {updateLocation} from "@/actions/location"
 import {createClient} from "@/lib/supabase/client"
 import {MapPin, Clock} from "lucide-react"
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover"
 
 interface ExtendedStage extends Stage {
     currentAct: Act | null
@@ -17,6 +18,7 @@ interface ExtendedStage extends Stage {
 interface UserLocation {
     user_id: string
     stage_id: number
+    timestamp: Date
     profiles: {
         username: string | null
         avatar_url: string | null
@@ -58,16 +60,17 @@ export function LiveTracker({stages, locations: initialLocations, userId}: LiveT
                     const {data} = await supabase
                         .from("user_locations")
                         .select(`
-              user_id,
-              stage_id,
-              profiles:user_id (
-                username,
-                avatar_url
-              ),
-              stages:stage_id (
-                name
-              )
-            `)
+                        user_id,
+                        stage_id,
+                        timestamp,
+                        profiles:user_id (
+                            username,
+                            avatar_url
+                        ),
+                        stages:stage_id (
+                            name
+                        )
+                        `)
                         .order("timestamp", {ascending: false})
 
                     if (data) {
@@ -161,10 +164,21 @@ export function LiveTracker({stages, locations: initialLocations, userId}: LiveT
                                             <div className="flex flex-wrap gap-2 w-full justify-end">
                                                 {usersAtStage.map((location) => (
                                                     <Avatar key={location.user_id}>
-                                                        <AvatarImage
+                                                        <Popover>
+                                                            <PopoverTrigger><AvatarImage
                                                             src={location.profiles.avatar_url || undefined}
-                                                            alt={location.profiles.username || "User"}
-                                                        />
+                                                            alt={location.profiles.username || "User"}/>
+                                                            </PopoverTrigger>
+                                                            <PopoverContent side="top">
+                                                                <div>
+                                                                    {/* ...other content... */}
+                                                                    <div className="text-xs text-muted-foreground">
+                                                                        {location.profiles.username} Zuletzt aktiv: {location.timestamp ? new Date(location.timestamp).toLocaleString("de-DE", { hour: "2-digit", minute: "2-digit" }) : "Unbekannt"}
+                                                                    </div>
+                                                                </div></PopoverContent>
+                                                        </Popover>
+
+                                                        
                                                         <AvatarFallback>
                                                             {location.profiles.username?.[0]?.toUpperCase() || "U"}
                                                         </AvatarFallback>
