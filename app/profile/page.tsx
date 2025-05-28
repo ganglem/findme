@@ -23,7 +23,7 @@ export default async function ProfilePage() {
   }
 
   return (
-    <div className="space-y-8 flex-col flex">
+    <div className="space-y-8">
       <div className="flex items-center gap-3">
         <Image
             src="/images/icon.svg"
