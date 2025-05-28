@@ -108,14 +108,14 @@
         font-weight:           900;
         letter-spacing:        var(--tracking-normal);
         @apply text-foreground;
-        background:            linear-gradient(to bottom, #fb7922, #fca72c);
+        background:            linear-gradient(to bottom, hsl(24, 86%, 56%), hsl(39, 97%, 59%));
         background-repeat:     no-repeat;
         background-size:       cover;
         background-attachment: fixed;
     }
 
     .dark body {
-        background:            linear-gradient(to bottom, hsl(200, 71.43%, 4.12%), hsl(210, 61%, 25%));
+        background:            linear-gradient(to bottom, hsl(200, 71.43%, 4.12%), hsl(205, 90%, 27%));
         background-repeat:     no-repeat;
         background-size:       cover;
         background-attachment: fixed;

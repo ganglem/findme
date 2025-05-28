@@ -31,7 +31,7 @@ export default async function Home() {
                     height={150}
                     className="mx-auto mb-4"
                 />
-                <h1 className="text-8xl mb-2">FIND.ME</h1>
+                <h1 className="text-6xl mb-2">FIND.ME</h1>
                 <p className="text-foreground text-lg">Dein Guide für das Ikarus Festival</p>
             </div>
 

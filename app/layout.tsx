@@ -31,27 +31,21 @@ export default function RootLayout({children}: RootLayoutProps) {
                 <Navigation/>
             </div>
 
-            <div className="fixed bottom-0 left-0 w-full h-[40vh] z-0 pointer-events-none flex flex-col">
-                {/* Light mode image */}
+            <div className="fixed -bottom-1/2 left-50 w-full h-full z-0 pointer-events-none flex flex-col">
                 <img
                     src="/images/forest-light.svg"
                     alt="forest silhouette"
-                    className="w-full object-cover block dark:hidden"
+                    className="w-full object-cover block dark:hidden transition-transform"
                     style={{height: "auto", maxHeight: "100%"}}
                 />
-
-                {/* Dark mode image */}
                 <img
                     src="/images/forest-dark.svg"
                     alt="forest silhouette"
-                    className="w-full object-cover hidden dark:block"
+                    className="w-full object-cover hidden dark:block transition-transform"
                     style={{height: "auto", maxHeight: "100%"}}
                 />
 
-                <div
-                    className="flex-1 w-full dark:bg-black"
-                    style={{backgroundColor: 'hsl(24, 95%, 55%)'}}
-                />
+                <div className="flex-1 w-full bg-[hsl(24,95%,55%)] dark:bg-black" />
 
             </div>
 
