@@ -164,7 +164,7 @@ function ActCard({ act, isFavorite, onToggleFavorite, showDay = false }: ActCard
                 size="icon"
                 onClick={onToggleFavorite}
                 className={cn(
-                    "bg-transparent hover:bg-transparent",
+                    "bg-transparent hover:bg-transparent flex-shrink-0",
                     isFavorite ? "text-foreground" : "text-muted-foreground"
                 )}
             >
