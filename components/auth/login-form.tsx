@@ -109,7 +109,7 @@ export function LoginForm() {
       <div className="text-center text-sm">
         <p>
           Noch kein Konto?{" "}
-          <Link href="/auth/register" className="text-primary hover:underline">
+          <Link href="/auth/register" className="text-muted-foreground hover:opacity-70">
             Registrieren
           </Link>
         </p>
