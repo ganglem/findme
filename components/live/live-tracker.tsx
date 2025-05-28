@@ -1,15 +1,15 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import type { Stage, Act } from "@/lib/festival-data"
-import { updateLocation } from "@/actions/location"
-import { createClient } from "@/lib/supabase/client"
-import { MapPin, Clock } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import {useState, useEffect} from "react"
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card"
+import {Button} from "@/components/ui/button"
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar"
+import type {Stage, Act} from "@/lib/festival-data"
+import {updateLocation} from "@/actions/location"
+import {createClient} from "@/lib/supabase/client"
+import {MapPin, Clock} from "lucide-react"
+import {cn} from "@/lib/utils"
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover"
 
 
 interface ExtendedStage extends Stage {
@@ -36,14 +36,14 @@ interface LiveTrackerProps {
     userId: string
 }
 
-export function LiveTracker({ stages, locations: initialLocations, userId }: LiveTrackerProps) {
+export function LiveTracker({stages, locations: initialLocations, userId}: LiveTrackerProps) {
     const [activeStage, setActiveStage] = useState<number | null>(null)
     const [locations, setLocations] = useState<UserLocation[]>(initialLocations)
     const [isUpdating, setIsUpdating] = useState(false)
     const sortedStages = [
-                        ...stages.filter((stage) => stage.name.toLowerCase() === "campingplatz"),
-                        ...stages.filter((stage) => stage.name.toLowerCase() !== "campingplatz"),
-                        ];
+        ...stages.filter((stage) => stage.name.toLowerCase() === "campingplatz"),
+        ...stages.filter((stage) => stage.name.toLowerCase() !== "campingplatz"),
+    ];
     const supabase = createClient()
 
     useEffect(() => {
@@ -52,12 +52,12 @@ export function LiveTracker({ stages, locations: initialLocations, userId }: Liv
             .on(
                 "postgres_changes",
                 {
-                    event: "*",
+                    event:  "*",
                     schema: "public",
-                    table: "user_locations",
+                    table:  "user_locations",
                 },
-                async () => {
-                    const { data } = await supabase
+                async() => {
+                    const {data} = await supabase
                         .from("user_locations")
                         .select(`
                         user_id,
@@ -85,7 +85,7 @@ export function LiveTracker({ stages, locations: initialLocations, userId }: Liv
         }
     }, [supabase])
 
-    const handleUpdateLocation = async (stageId: number) => {
+    const handleUpdateLocation = async(stageId: number) => {
         setIsUpdating(true)
         setActiveStage(stageId)
         await updateLocation(stageId)
@@ -145,7 +145,7 @@ export function LiveTracker({ stages, locations: initialLocations, userId }: Liv
                                         )}
                                     </div>
                                     {/* Right column: Button and avatars */}
-                                    <div className="flex flex-col items-end justify-between min-w-[100px] h-full w-full space-y-4">
+                                    <div className="flex flex-col items-center justify-between min-w-[100px] h-full w-full space-y-4">
                                         <Button
                                             variant={userLocation?.stage_id === stage.id ? "default" : "outline"}
                                             className={cn(
@@ -161,22 +161,25 @@ export function LiveTracker({ stages, locations: initialLocations, userId }: Liv
                             {userLocation?.stage_id === stage.id ? "Hier" : "Let's go! "}
                         </span>
                                         </Button>
-                                        {usersAtStage.length > 0 ? (
-                                            <div className="flex flex-wrap gap-2 w-full justify-end">
+                                        {usersAtStage.length>0 ? (
+                                            <div className="flex flex-wrap gap-2 w-full justify-center">
                                                 {usersAtStage.map((location) => (
                                                     <Avatar key={location.user_id}>
                                                         <Popover>
                                                             <PopoverTrigger><AvatarImage
-                                                            src={location.profiles.avatar_url || undefined}
-                                                            alt={location.profiles.username || "User"}/>
+                                                                src={location.profiles.avatar_url || undefined}
+                                                                alt={location.profiles.username || "User"}/>
                                                             </PopoverTrigger>
                                                             <PopoverContent side="top">
                                                                 <div>
                                                                     {/* ...other content... */}
                                                                     <div className="text-xs text-muted-foreground">
-                                                                        {location.profiles.username} Zuletzt aktiv: {location.timestamp ? new Date(location.timestamp).toLocaleString("de-DE", { hour: "2-digit", minute: "2-digit" }) : "Unbekannt"}
+                                                                        {location.profiles.username} Zuletzt aktiv: {location.timestamp ? new Date(location.timestamp).toLocaleString("de-DE", {
+                                                                        hour: "2-digit", minute: "2-digit"
+                                                                    }) : "Unbekannt"}
                                                                     </div>
-                                                                </div></PopoverContent>
+                                                                </div>
+                                                            </PopoverContent>
                                                         </Popover>
 
 
@@ -187,7 +190,7 @@ export function LiveTracker({ stages, locations: initialLocations, userId }: Liv
                                                 ))}
                                             </div>
                                         ) : (
-                                            <div className="text-sm text-muted-foreground text-right">Niemand ist hier</div>
+                                            <div className="text-sm text-muted-foreground text-center">Niemand ist hier</div>
                                         )}
                                     </div>
                                 </div>
