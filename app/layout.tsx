@@ -26,11 +26,23 @@ export default function RootLayout({ children }: RootLayoutProps) {
     </head>
     <body className={inter.className}>
     <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <div className="flex flex-col min-h-screen">
+          <div className="flex flex-col min-h-screen z-10 relative">
             <main className="flex-1 container max-w-md mx-auto px-4 py-8 pb-[90px]">{children}</main>
             <Navigation />
           </div>
-        </ThemeProvider>
+
+        <div className="fixed bottom-0 left-0 w-full h-[40vh] z-0 pointer-events-none flex flex-col">
+            <img
+                src="/images/forest.svg"
+                alt="forest silhouette"
+                className="w-full object-cover"
+                style={{ height: "auto", maxHeight: "100%" }}
+            />
+            <div className="flex-1 w-full bg-black " />
+        </div>
+
+
+    </ThemeProvider>
       </body>
     </html>
   )
