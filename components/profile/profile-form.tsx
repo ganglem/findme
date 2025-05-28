@@ -66,14 +66,15 @@ export function ProfileForm({ profile, updateProfile }: ProfileFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="mx-16 space-y-10">
+
       <div className="flex flex-col items-center space-y-4">
         <Avatar className="w-24 h-24">
           <AvatarImage src={avatarUrl || undefined} alt={profile?.username || "Avatar"} />
           <AvatarFallback>{profile?.username?.[0]?.toUpperCase() || "U"}</AvatarFallback>
         </Avatar>
 
-        <div className="relative">
+        <div className="relative w-full">
           <Input
             id="avatar"
             name="avatar"
@@ -83,36 +84,36 @@ export function ProfileForm({ profile, updateProfile }: ProfileFormProps) {
             onChange={handleAvatarChange}
           />
           <Label
-            htmlFor="avatar"
-            className="flex items-center justify-center px-4 py-2 text-sm border-2 rounded-none cursor-pointer hover:bg-transparent hover:opacity-70"
+              htmlFor="avatar"
+              className="flex items-center justify-center px-3 py-1.5 text-base border-4 rounded-none cursor-pointer hover:bg-transparent hover:opacity-70"
           >
-            <Upload className="w-4 h-4 mr-2" />
+            <Upload className="w-6 h-6 mr-2" />
             Profilbild ändern
           </Label>
+
         </div>
       </div>
 
-      <div className="space-y-4">
-        <div className="space-y-2">
+
+        <div>
           <Label htmlFor="username">Benutzername</Label>
           <Input id="username" className="placeholder:opacity-70" name="username" defaultValue={profile?.username || ""} placeholder="dein_username" />
         </div>
-      </div>
 
-      {error && <div className="text-red-500 text-sm">{error}</div>}
 
-      {success && <div className="text-green-500 text-sm">Profil erfolgreich aktualisiert!</div>}
+      {error && <div className="text-destructive-foreground text-sm">{error}</div>}
 
-      <div className="justify-center flex py-4">
-        <Button type="submit" variant="outline" disabled={isLoading}>
+      {success && <div className="text-success-foreground text-sm">Profil erfolgreich aktualisiert!</div>}
+
+      <div className="justify-center items-center flex flex-col space-y-6 py-4">
+        <Button type="submit" className="w-full" variant="outline" disabled={isLoading}>
           {isLoading ? "Wird gespeichert..." : "Profil speichern"}
         </Button>
-      </div>
 
-      <div className="justify-center flex pb-4">
         <Button
           type="button"
-          variant="outline"
+          variant="destructive"
+          className="w-full"
           onClick={async () => {
             if (window.confirm("Bitte bestätigen: Möchtest du dein Profil wirklich löschen?")) {
               setIsLoading(true)

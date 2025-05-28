@@ -8,7 +8,9 @@ import type {Stage, Act} from "@/lib/festival-data"
 import {updateLocation} from "@/actions/location"
 import {createClient} from "@/lib/supabase/client"
 import {MapPin, Clock} from "lucide-react"
+import {cn} from "@/lib/utils"
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover"
+
 
 interface ExtendedStage extends Stage {
     currentAct: Act | null
@@ -39,24 +41,22 @@ export function LiveTracker({stages, locations: initialLocations, userId}: LiveT
     const [locations, setLocations] = useState<UserLocation[]>(initialLocations)
     const [isUpdating, setIsUpdating] = useState(false)
     const sortedStages = [
-                        ...stages.filter((stage) => stage.name.toLowerCase() === "campingplatz"),
-                        ...stages.filter((stage) => stage.name.toLowerCase() !== "campingplatz"),
-                        ];
+        ...stages.filter((stage) => stage.name.toLowerCase() === "campingplatz"),
+        ...stages.filter((stage) => stage.name.toLowerCase() !== "campingplatz"),
+    ];
     const supabase = createClient()
 
     useEffect(() => {
-        // Abonniere Änderungen an der user_locations Tabelle
         const channel = supabase
             .channel("user_locations_changes")
             .on(
                 "postgres_changes",
                 {
-                    event: "*",
+                    event:  "*",
                     schema: "public",
-                    table: "user_locations",
+                    table:  "user_locations",
                 },
-                async () => {
-                    // Hole aktualisierte Standorte
+                async() => {
                     const {data} = await supabase
                         .from("user_locations")
                         .select(`
@@ -76,7 +76,7 @@ export function LiveTracker({stages, locations: initialLocations, userId}: LiveT
                     if (data) {
                         setLocations(data as UserLocation[])
                     }
-                },
+                }
             )
             .subscribe()
 
@@ -85,12 +85,10 @@ export function LiveTracker({stages, locations: initialLocations, userId}: LiveT
         }
     }, [supabase])
 
-    const handleUpdateLocation = async (stageId: number) => {
+    const handleUpdateLocation = async(stageId: number) => {
         setIsUpdating(true)
         setActiveStage(stageId)
-
         await updateLocation(stageId)
-
         setIsUpdating(false)
     }
 
@@ -147,10 +145,13 @@ export function LiveTracker({stages, locations: initialLocations, userId}: LiveT
                                         )}
                                     </div>
                                     {/* Right column: Button and avatars */}
-                                    <div className="flex flex-col items-end justify-between min-w-[100px] h-full w-full">
+                                    <div className="flex flex-col items-center justify-between min-w-[100px] h-full w-full space-y-4">
                                         <Button
                                             variant={userLocation?.stage_id === stage.id ? "default" : "outline"}
-                                            className="gap-1 p-1 flex flex-col items-center h-16 mb-4"
+                                            className={cn(
+                                                "gap-1 p-1 flex flex-col items-center h-16",
+                                                userLocation?.stage_id === stage.id && "bg-transparent hover:bg-transparent"
+                                            )}
                                             size="sm"
                                             onClick={() => handleUpdateLocation(stage.id)}
                                             disabled={isUpdating}
@@ -160,25 +161,28 @@ export function LiveTracker({stages, locations: initialLocations, userId}: LiveT
                             {userLocation?.stage_id === stage.id ? "Hier" : "Let's go! "}
                         </span>
                                         </Button>
-                                        {usersAtStage.length > 0 ? (
-                                            <div className="flex flex-wrap gap-2 w-full justify-end">
+                                        {usersAtStage.length>0 ? (
+                                            <div className="flex flex-wrap gap-2 w-full justify-center">
                                                 {usersAtStage.map((location) => (
                                                     <Avatar key={location.user_id}>
                                                         <Popover>
                                                             <PopoverTrigger><AvatarImage
-                                                            src={location.profiles.avatar_url || undefined}
-                                                            alt={location.profiles.username || "User"}/>
+                                                                src={location.profiles.avatar_url || undefined}
+                                                                alt={location.profiles.username || "User"}/>
                                                             </PopoverTrigger>
                                                             <PopoverContent side="top">
                                                                 <div>
                                                                     {/* ...other content... */}
                                                                     <div className="text-xs text-muted-foreground">
-                                                                        {location.profiles.username} Zuletzt aktiv: {location.timestamp ? new Date(location.timestamp).toLocaleString("de-DE", { hour: "2-digit", minute: "2-digit" }) : "Unbekannt"}
+                                                                        {location.profiles.username} Zuletzt aktiv: {location.timestamp ? new Date(location.timestamp).toLocaleString("de-DE", {
+                                                                        hour: "2-digit", minute: "2-digit"
+                                                                    }) : "Unbekannt"}
                                                                     </div>
-                                                                </div></PopoverContent>
+                                                                </div>
+                                                            </PopoverContent>
                                                         </Popover>
 
-                                                        
+
                                                         <AvatarFallback>
                                                             {location.profiles.username?.[0]?.toUpperCase() || "U"}
                                                         </AvatarFallback>
@@ -186,7 +190,7 @@ export function LiveTracker({stages, locations: initialLocations, userId}: LiveT
                                                 ))}
                                             </div>
                                         ) : (
-                                            <div className="text-sm text-muted-foreground">Niemand ist hier</div>
+                                            <div className="text-sm text-muted-foreground text-center">Niemand ist hier</div>
                                         )}
                                     </div>
                                 </div>

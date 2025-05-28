@@ -104,8 +104,8 @@ export function RegisterForm() {
         <Input className="placeholder:opacity-70" id="password" name="password" type="password" placeholder="••••••••" required minLength={6} />
       </div>
 
-      {error && <div className="text-red-500 text-sm">{error}</div>}
-      {success && <div className="text-green-500 text-sm">{success}</div>}
+      {error && <div className="text-destructive-foreground text-sm">{error}</div>}
+      {success && <div className="text-success-foreground text-sm">{success}</div>}
 
       <div className="py-4 w-full flex justify-center">
         <Button type="submit" variant="outline" disabled={isLoading}>

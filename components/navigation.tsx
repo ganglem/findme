@@ -20,7 +20,7 @@ export function Navigation({}: NavigationProps) {
   }, [pathname]);
         
   return isNavigationVisible ? (
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-border">
+      <nav className="fixed bottom-0 left-0 right-0 bg-sidebar-primary border-t border-border">
         <div className="container max-w-md mx-auto">
           <div className="flex justify-around py-2">
             <NavItem href="/" icon={<Home />} label="Home" active={pathname === "/"} />
@@ -45,7 +45,7 @@ function NavItem({ href, icon, label, active }: NavItemProps) {
       <Link
           href={href}
           className={`flex flex-col items-center p-2 ${
-              active ? "text-primary" : "text-muted-foreground"
+              active ? "text-primary-foreground" : "text-sidebar-foreground"
           }`}
       >
         {icon}

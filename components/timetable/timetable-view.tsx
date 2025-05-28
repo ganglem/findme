@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import type { Act, Day, Stage } from "@/lib/festival-data"
 import { toggleFavorite } from "@/actions/favorites"
 import { Heart } from "lucide-react"
+import {cn} from "@/lib/utils";
 
 interface TimetableViewProps {
   days: Day[]
@@ -148,26 +149,29 @@ interface ActCardProps {
 
 function ActCard({ act, isFavorite, onToggleFavorite, showDay = false }: ActCardProps) {
   return (
-    <Card>
-      <CardContent className="p-4">
-        <div className="flex justify-between items-center">
-          <div className="flex flex-col">
-            <div className="font-bold">{act.artist}</div>
-            <div className="text-sm text-muted-foreground">
-              {act.time} • {act.stage}
-              {showDay && ` • ${act.day}`}
+      <Card>
+        <CardContent className="p-4">
+          <div className="flex justify-between items-center">
+            <div>
+              <div>{act.artist}</div>
+              <div className="text-sm text-muted-foreground">
+                {act.time} • {act.stage}
+                {showDay && ` • ${act.day}`}
+              </div>
             </div>
+            <Button
+                variant="ghost"
+                size="icon"
+                onClick={onToggleFavorite}
+                className={cn(
+                    "bg-transparent hover:bg-transparent",
+                    isFavorite ? "text-foreground" : "text-muted-foreground"
+                )}
+            >
+              <Heart className={isFavorite ? "fill-current" : ""} width={32} height={32} />
+            </Button>
           </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onToggleFavorite}
-            className={isFavorite ? "text-foreground" : "text-muted-foreground"}
-          >
-            <Heart className={isFavorite ? "fill-current" : ""} width={32} height={32} />
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
   )
 }
