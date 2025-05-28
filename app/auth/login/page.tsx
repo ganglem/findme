@@ -29,9 +29,9 @@ export default async function LoginPage({searchParams}: LoginPageProps) {
                         height={150}
                         className="mx-auto mb-4 cursor-pointer"
                     />
-                    <h1 className="text-8xl font-bold mb-2 cursor-pointer">Find.me</h1>
+                    <h1 className="text-7xl sm:text-8xl font-bold mb-2 cursor-pointer">Find.me</h1>
                 </Link>
-                <p className="text-foreground text-lg">Dein Guide für das Ikarus Festival</p>
+                <p className="text-foreground text-md sm:text-lg">Dein Guide für das Ikarus Festival</p>
             </div>
             <div className="w-full max-w-md p-8 space-y-8 bg-card rounded-none border-4">
                 <div className="text-center">
