@@ -1,55 +1,55 @@
-import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs"
-import { NextResponse } from "next/server"
-import type { NextRequest } from "next/server"
+import {createMiddlewareClient} from "@supabase/auth-helpers-nextjs"
+import {NextResponse} from "next/server"
+import type {NextRequest} from "next/server"
 
 export async function middleware(req: NextRequest) {
-  // Erstelle eine Antwort und einen Supabase-Client
-  const res = NextResponse.next()
-  const supabase = createMiddlewareClient({ req, res })
+    // Erstelle eine Antwort und einen Supabase-Client
+    const res = NextResponse.next()
+    const supabase = createMiddlewareClient({req, res})
 
-  // Hole die aktuelle Session
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
+    // Hole die aktuelle Session
+    const {
+        data: {session},
+    } = await supabase.auth.getSession()
 
-  // Definiere geschützte und öffentliche Routen
-  const isAuthRoute = req.nextUrl.pathname.startsWith("/auth")
-  const isImageRoute = req.nextUrl.pathname.startsWith("/images")
-  const isApiRoute = req.nextUrl.pathname.startsWith("/api")
-  const isPublicRoute = isAuthRoute || isApiRoute || isImageRoute
+    // Definiere geschützte und öffentliche Routen
+    const isAuthRoute = req.nextUrl.pathname.startsWith("/auth")
+    const isImageRoute = req.nextUrl.pathname.startsWith("/images")
+    const isApiRoute = req.nextUrl.pathname.startsWith("/api")
+    const isPublicRoute = isAuthRoute || isApiRoute || isImageRoute
 
-  // Debugging-Informationen
-  console.log("Middleware:", {
-    path: req.nextUrl.pathname,
-    isAuthRoute,
-    hasSession: !!session,
-  })
+    // Debugging-Informationen
+    console.log("Middleware:", {
+        path:       req.nextUrl.pathname,
+        isAuthRoute,
+        hasSession: !!session,
+    })
 
-  // Wenn der Benutzer nicht angemeldet ist und versucht, auf eine geschützte Route zuzugreifen
-  if (!session && !isPublicRoute) {
-    const redirectUrl = new URL("/auth/login", req.url)
-    return NextResponse.redirect(redirectUrl)
-  }
+    // Wenn der Benutzer nicht angemeldet ist und versucht, auf eine geschützte Route zuzugreifen
+    if (!session && !isPublicRoute) {
+        const redirectUrl = new URL("/auth/login", req.url)
+        return NextResponse.redirect(redirectUrl)
+    }
 
-  // Wenn der Benutzer angemeldet ist und versucht, auf eine Auth-Route zuzugreifen
-  if (session && isAuthRoute) {
-    const redirectUrl = new URL("/", req.url)
-    return NextResponse.redirect(redirectUrl)
-  }
+    // Wenn der Benutzer angemeldet ist und versucht, auf eine Auth-Route zuzugreifen
+    if (session && isAuthRoute) {
+        const redirectUrl = new URL("/", req.url)
+        return NextResponse.redirect(redirectUrl)
+    }
 
-  return res
+    return res
 }
 
 // Middleware nur für bestimmte Pfade ausführen
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public (public files)
-     */
-    "/((?!_next/static|_next/image|favicon.ico|public).*)",
-  ],
+    matcher: [
+        /*
+         * Match all request paths except for the ones starting with:
+         * - _next/static (static files)
+         * - _next/image (image optimization files)
+         * - favicon.ico (favicon file)
+         * - public (public files)
+         */
+        "/((?!_next/static|_next/image|favicon.ico|public).*)",
+    ],
 }
