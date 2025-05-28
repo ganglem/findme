@@ -83,12 +83,13 @@ export function ProfileForm({ profile, updateProfile }: ProfileFormProps) {
             onChange={handleAvatarChange}
           />
           <Label
-            htmlFor="avatar"
-            className="flex items-center justify-center px-4 py-2 text-sm border-2 rounded-none cursor-pointer hover:bg-transparent hover:opacity-70"
+              htmlFor="avatar"
+              className="flex items-center justify-center px-3 py-1.5 text-base border-4 rounded-none cursor-pointer hover:bg-transparent hover:opacity-70"
           >
-            <Upload className="w-4 h-4 mr-2" />
+            <Upload className="w-6 h-6 mr-2" />
             Profilbild ändern
           </Label>
+
         </div>
       </div>
 
@@ -99,9 +100,9 @@ export function ProfileForm({ profile, updateProfile }: ProfileFormProps) {
         </div>
       </div>
 
-      {error && <div className="text-red-500 text-sm">{error}</div>}
+      {error && <div className="bg-destructive text-sm">{error}</div>}
 
-      {success && <div className="text-green-500 text-sm">Profil erfolgreich aktualisiert!</div>}
+      {success && <div className="text-success-foreground text-sm">Profil erfolgreich aktualisiert!</div>}
 
       <div className="justify-center flex py-4">
         <Button type="submit" variant="outline" disabled={isLoading}>
@@ -112,7 +113,7 @@ export function ProfileForm({ profile, updateProfile }: ProfileFormProps) {
       <div className="justify-center flex pb-4">
         <Button
           type="button"
-          variant="outline"
+          variant="destructive"
           onClick={async () => {
             if (window.confirm("Bitte bestätigen: Möchtest du dein Profil wirklich löschen?")) {
               setIsLoading(true)

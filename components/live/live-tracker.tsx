@@ -1,13 +1,14 @@
 "use client"
 
-import {useState, useEffect} from "react"
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card"
-import {Button} from "@/components/ui/button"
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar"
-import type {Stage, Act} from "@/lib/festival-data"
-import {updateLocation} from "@/actions/location"
-import {createClient} from "@/lib/supabase/client"
-import {MapPin, Clock} from "lucide-react"
+import { useState, useEffect } from "react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import type { Stage, Act } from "@/lib/festival-data"
+import { updateLocation } from "@/actions/location"
+import { createClient } from "@/lib/supabase/client"
+import { MapPin, Clock } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 interface ExtendedStage extends Stage {
     currentAct: Act | null
@@ -32,19 +33,15 @@ interface LiveTrackerProps {
     userId: string
 }
 
-export function LiveTracker({stages, locations: initialLocations, userId}: LiveTrackerProps) {
+export function LiveTracker({ stages, locations: initialLocations, userId }: LiveTrackerProps) {
     const [activeStage, setActiveStage] = useState<number | null>(null)
     const [locations, setLocations] = useState<UserLocation[]>(initialLocations)
     const [isUpdating, setIsUpdating] = useState(false)
-    const campingStage = {
-        id: 8, // Make sure this ID does not conflict with real stage IDs
-        name: "Campingplatz"
-    };
+    const campingStage = { id: 8, name: "Campingplatz" }
 
     const supabase = createClient()
 
     useEffect(() => {
-        // Abonniere Änderungen an der user_locations Tabelle
         const channel = supabase
             .channel("user_locations_changes")
             .on(
@@ -55,8 +52,7 @@ export function LiveTracker({stages, locations: initialLocations, userId}: LiveT
                     table: "user_locations",
                 },
                 async () => {
-                    // Hole aktualisierte Standorte
-                    const {data} = await supabase
+                    const { data } = await supabase
                         .from("user_locations")
                         .select(`
               user_id,
@@ -69,12 +65,10 @@ export function LiveTracker({stages, locations: initialLocations, userId}: LiveT
                 name
               )
             `)
-                        .order("timestamp", {ascending: false})
+                        .order("timestamp", { ascending: false })
 
-                    if (data) {
-                        setLocations(data as UserLocation[])
-                    }
-                },
+                    if (data) setLocations(data as UserLocation[])
+                }
             )
             .subscribe()
 
@@ -86,9 +80,7 @@ export function LiveTracker({stages, locations: initialLocations, userId}: LiveT
     const handleUpdateLocation = async (stageId: number) => {
         setIsUpdating(true)
         setActiveStage(stageId)
-
         await updateLocation(stageId)
-
         setIsUpdating(false)
     }
 
@@ -97,7 +89,6 @@ export function LiveTracker({stages, locations: initialLocations, userId}: LiveT
     return (
         <div className="space-y-8">
             <div className="space-y-4">
-                {/* Campingplatz tile */}
                 {campingStage && (
                     <Card key={campingStage.id}>
                         <CardHeader className="pb-2">
@@ -108,54 +99,52 @@ export function LiveTracker({stages, locations: initialLocations, userId}: LiveT
                                     size="sm"
                                     onClick={() => handleUpdateLocation(campingStage.id)}
                                     disabled={isUpdating}
+                                    className={cn(
+                                        userLocation?.stage_id === campingStage.id && "bg-transparent hover:bg-transparent"
+                                    )}
                                 >
-                                    <MapPin className="w-4 h-4 mr-2"/>
+                                    <MapPin className="w-4 h-4 mr-2" />
                                     {userLocation?.stage_id === campingStage.id ? "Ich bin hier" : "Hier bin ich"}
                                 </Button>
                             </CardTitle>
                         </CardHeader>
-                        <CardContent>
-                        </CardContent>
+                        <CardContent />
                     </Card>
                 )}
+
                 <h2 className="text-xl font-semibold">Aktuelle Acts</h2>
 
                 <div className="grid gap-4 items-start">
                     {stages.map((stage) => (
                         <Card key={stage.id}>
                             <div className="flex flex-row items-start p-4 gap-6">
-                                {/* Left column: Header and act info */}
                                 <div className="flex flex-col flex-1 space-y-3">
                                     <CardHeader className="p-0">
                                         <CardTitle className="text-lg">{stage.name}</CardTitle>
                                     </CardHeader>
 
-                                    {/* Current Act */}
                                     <div>
                                         <div className="text-sm font-medium flex items-center">
-                                            <Clock className="w-4 h-4 mr-1"/> Aktuell
+                                            <Clock className="w-4 h-4 mr-1" /> Aktuell
                                         </div>
                                         {stage.currentAct ? (
                                             <div>
                                                 <div className="font-bold">{stage.currentAct.artist}</div>
-                                                <div
-                                                    className="text-xs text-muted-foreground">{stage.currentAct.time}</div>
+                                                <div className="text-xs text-muted-foreground">{stage.currentAct.time}</div>
                                             </div>
                                         ) : (
                                             <div className="text-sm text-muted-foreground">Kein aktueller Act</div>
                                         )}
                                     </div>
 
-                                    {/* Next Act */}
                                     <div>
                                         <div className="text-sm font-medium flex items-center">
-                                            <Clock className="w-4 h-4 mr-1"/> Als nächstes
+                                            <Clock className="w-4 h-4 mr-1" /> Als nächstes
                                         </div>
                                         {stage.nextAct ? (
                                             <div>
                                                 <div className="font-bold">{stage.nextAct.artist}</div>
-                                                <div
-                                                    className="text-xs text-muted-foreground">{stage.nextAct.time}</div>
+                                                <div className="text-xs text-muted-foreground">{stage.nextAct.time}</div>
                                             </div>
                                         ) : (
                                             <div className="text-sm text-muted-foreground">Kein weiterer Act</div>
@@ -163,19 +152,21 @@ export function LiveTracker({stages, locations: initialLocations, userId}: LiveT
                                     </div>
                                 </div>
 
-                                {/* Right column: Button */}
                                 <div className="flex flex-col items-center justify-start min-w-[100px]">
                                     <Button
                                         variant={userLocation?.stage_id === stage.id ? "default" : "outline"}
-                                        className="gap-1 p-1 flex flex-col items-center h-16"
+                                        className={cn(
+                                            "gap-1 p-1 flex flex-col items-center h-16",
+                                            userLocation?.stage_id === stage.id && "bg-transparent hover:bg-transparent"
+                                        )}
                                         size="sm"
                                         onClick={() => handleUpdateLocation(stage.id)}
                                         disabled={isUpdating}
                                     >
-                                        <MapPin className="w-10 h-10 text-foreground"/>
+                                        <MapPin className="w-10 h-10 text-foreground" />
                                         <span className="text-xs">
-                                             {userLocation?.stage_id === stage.id ? "Hier" : "Let's go! "}
-                                        </span>
+                      {userLocation?.stage_id === stage.id ? "Hier" : "Let's go!"}
+                    </span>
                                     </Button>
                                 </div>
                             </div>

@@ -1,5 +1,5 @@
 <p>
- <img src="public/icon.svg" width="60" align="left" hspace="5">
+ <img src="public/images/icon.svg" width="60" align="left" hspace="5">
  <p>
    <h1><a>Find.me Festival Timetable App</a></h1>
  </p>

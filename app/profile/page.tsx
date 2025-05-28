@@ -4,6 +4,7 @@ import { ProfileForm } from "@/components/profile/profile-form"
 import { updateProfile } from "@/actions/profile"
 import { SignOutButton } from "@/components/auth/sign-out-button"
 import {Profile} from "@/lib/supabase/database.types";
+import Image from "next/image";
 
 export default async function ProfilePage() {
   const supabase = createClient()
@@ -23,7 +24,14 @@ export default async function ProfilePage() {
 
   return (
     <div className="space-y-8 flex-col flex">
-      <div className="flex justify-between items-center">
+      <div className="flex items-center gap-3">
+        <Image
+            src="/images/icon.svg"
+            alt="Ikarus Festival Logo"
+            width={36}
+            height={36}
+            className="h-[3em] w-auto align-middle"
+        />
         <h1 className="text-2xl font-bold">Mein Profil</h1>
         <SignOutButton />
       </div>

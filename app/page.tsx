@@ -25,14 +25,14 @@ export default async function Home() {
     <div className="flex flex-col items-center justify-center space-y-8 pt-8">
       <div className="text-center">
         <Image
-          src="/icon.svg?height=150&width=150&query=ikarus+festival+logo"
+          src="/images/icon.svg"
           alt="Ikarus Festival Logo"
           width={150}
           height={150}
           className="mx-auto mb-4"
         />
         <h1 className="text-8xl font-bold mb-2">Find.me</h1>
-        <p className="text-muted-foreground text-lg">Dein Guide für das Ikarus Festival</p>
+        <p className="text-foreground text-lg">Dein Guide für das Ikarus Festival</p>
       </div>
 
       <div className="grid grid-cols-2 gap-4 w-full">
