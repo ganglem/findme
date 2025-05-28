@@ -25,7 +25,7 @@ export default function RootLayout({children}: RootLayoutProps) {
             <meta name="viewport" content="width=device-width, initial-scale=1"/>
         </head>
         <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <div className="flex flex-col min-h-screen z-10 relative">
                 <main className="flex-1 container max-w-md mx-auto px-4 py-8 pb-[90px]">{children}</main>
                 <Navigation/>
