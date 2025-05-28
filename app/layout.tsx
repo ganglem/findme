@@ -32,14 +32,29 @@ export default function RootLayout({ children }: RootLayoutProps) {
           </div>
 
         <div className="fixed bottom-0 left-0 w-full h-[40vh] z-0 pointer-events-none flex flex-col">
+            {/* Light mode image */}
             <img
-                src="/images/forest.svg"
+                src="/images/forest-light.svg"
                 alt="forest silhouette"
-                className="w-full object-cover"
+                className="w-full object-cover block dark:hidden"
                 style={{ height: "auto", maxHeight: "100%" }}
             />
-            <div className="flex-1 w-full bg-black " />
+
+            {/* Dark mode image */}
+            <img
+                src="/images/forest-dark.svg"
+                alt="forest silhouette"
+                className="w-full object-cover hidden dark:block"
+                style={{ height: "auto", maxHeight: "100%" }}
+            />
+
+            <div
+                className="flex-1 w-full dark:bg-black"
+                style={{ backgroundColor: 'hsl(24, 95%, 55%)' }}
+            />
+
         </div>
+
 
 
     </ThemeProvider>
