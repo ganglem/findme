@@ -101,7 +101,7 @@ export function ProfileForm({ profile, updateProfile }: ProfileFormProps) {
         </div>
 
 
-      {error && <div className="bg-destructive text-sm">{error}</div>}
+      {error && <div className="text-destructive-foreground text-sm">{error}</div>}
 
       {success && <div className="text-success-foreground text-sm">Profil erfolgreich aktualisiert!</div>}
 
