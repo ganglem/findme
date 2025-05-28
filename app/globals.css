@@ -122,8 +122,8 @@
   }
 
   *, ::before, ::after {
-    font-family: var(--font-nexa), sans-serif !important;
-    font-weight: 900 !important;
+    font-family: var(--font-nexa), sans-serif;
+    font-weight: 900;
 
     @apply border-border;
   }
