@@ -16,6 +16,27 @@ export function LoginForm() {
   const router = useRouter()
   const supabase = createClient()
 
+  async function signInAnonymously() {
+    setIsLoading(true)
+    setError(null)
+
+    try {
+      const { data, error } = await supabase.auth.signInAnonymously()
+      if (error) {
+        setError(error.message)
+        setIsLoading(false)
+        return
+      }
+      console.log("Anonym angemeldet:", data)
+      router.push("/")
+      router.refresh()
+    } catch (err: any) {
+      console.error("Anonyme Anmeldung fehlgeschlagen:", err)
+      setError(err.message || "Ein Fehler ist aufgetreten")
+      setIsLoading(false)
+    }
+  }
+
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setIsLoading(true)
@@ -66,7 +87,7 @@ export function LoginForm() {
     }
   }
 
-  return (
+  return <>
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2">
         <Label htmlFor="email">E-Mail</Label>
@@ -94,5 +115,10 @@ export function LoginForm() {
         </p>
       </div>
     </form>
-  )
+    { process.env.NEXT_PUBLIC_ENABLE_ANONYMOUS_LOGIN && <div className="py-4 w-full flex justify-center">
+        <Button onClick={signInAnonymously} variant="outline" disabled={isLoading}>
+            {isLoading ? "Wird angemeldet..." : "Anonym anmelden"}
+        </Button>
+    </div>}
+  </>
 }
