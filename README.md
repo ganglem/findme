@@ -5,6 +5,10 @@
  </p>
 </p>
 
+Digital festival companion which allows users to live track their own and their friends' stage location, view all festival acts, mark favorite acts, and profile management.
+
+---
+
 This project is a modern web application for managing and viewing a festival timetable, built with Next.js, React, and Supabase. It allows users to:
 
 - View all festival acts by day and stage
