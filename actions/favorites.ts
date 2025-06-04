@@ -59,3 +59,45 @@ export async function getFavorites() {
 
   return { favorites: data.map((fav) => fav.act_id) }
 }
+
+export async function getUsersWhoFavoritedAct(actId: number): Promise<{ id: string; username: string; avatarUrl: string}[]> {
+  const supabase = await createClient()
+
+  const {
+      data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) return []
+
+  const { data: favoritedData, error } = await supabase
+      .from("user_favorites")
+      .select("user_id")
+      .eq("act_id", actId)
+
+  if (error) {
+      console.error("Error fetching users who favorited act:", error)
+      return []
+  }
+
+  const userIds = favoritedData.map((fav) => fav.user_id)
+
+  const { data: usersData, error: usersError } = await supabase
+      .from("profiles")
+      .select("id, username, avatar_url")
+      .in("id", userIds)
+
+  if (usersError) {
+      console.error("Error fetching users:", usersError)
+      return []
+  }
+
+  if (!usersData || usersData.length === 0) {
+      console.warn("No users found who favorited this act.")
+      return []
+  }
+
+  return usersData.map((user) => ({
+    id: user.id,
+    username: user.username,
+    avatarUrl: user.avatar_url
+  }))
+}
