@@ -99,7 +99,21 @@ export function LiveTracker({stages, locations: initialLocations, userId}: LiveT
             <div className="space-y-4">
                 <div className="grid gap-4 items-start">
                     {sortedStages.map((stage) => {
-                        const usersAtStage = locations.filter((loc) => loc.stage_id === stage.id);
+                        // --- Begin: Filter users by 06:00 cutoff ---
+                        const now = new Date();
+                        let cutoff = new Date(now);
+                        cutoff.setHours(6, 0, 0, 0);
+                        if (now < cutoff) {
+                            // If before 06:00, use yesterday 06:00
+                            cutoff.setDate(cutoff.getDate() - 1);
+                        }
+                        const cutoffUnix = cutoff.getTime();
+
+                        const usersAtStage = locations.filter((loc) =>
+                            loc.stage_id === stage.id &&
+                            (!loc.timestamp || new Date(loc.timestamp).getTime() >= cutoffUnix)
+                        );
+                        // --- End: Filter users by 06:00 cutoff ---
                         const isCampingplatz = stage.name.toLowerCase() === "campingplatz";
 
                         return (
