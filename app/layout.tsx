@@ -18,7 +18,7 @@ interface RootLayoutProps {
 
 export default function RootLayout({children}: RootLayoutProps) {
     return (
-        <html lang="de">
+        <html lang="de" suppressHydrationWarning>
         <head>
             <link rel="manifest" href="/manifest.json"/>
             <link rel="stylesheet" href="https://use.typekit.net/exp6oyj.css"/>
