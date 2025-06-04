@@ -1,10 +1,10 @@
 "use client"
 
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs"
 import {Button} from "@/components/ui/button"
 import type {Act, Day, Stage} from "@/lib/festival-data"
-import {toggleFavorite} from "@/actions/favorites"
+import {getAllFavoritesForDay, toggleFavorite} from "@/actions/favorites"
 import ActCard from "@/components/timetable/act-card";
 
 interface TimetableViewProps {
@@ -18,6 +18,24 @@ export function TimetableView({ days, stages, acts, favorites: initialFavorites 
   const [activeDay, setActiveDay] = useState(days[0].name)
   const [activeStages, setActiveStages] = useState<number[]>([])
   const [favorites, setFavorites] = useState<number[]>(initialFavorites)
+  const [actsFavorites, setActsFavorites] = useState<Record<string, Record<string, { id: string; username: string; avatarUrl: string}[]>>>({})
+
+  useEffect(() => {
+
+    if (actsFavorites[activeDay]) return;
+
+    getAllFavoritesForDay(activeDay).then((data) => {
+      setActsFavorites({
+        ...actsFavorites,
+        [activeDay]: data,
+      })
+    })
+  }, [activeDay]);
+
+  useEffect(() => {
+    // Subscribe to favorites changes
+
+  }, []);
 
   // Helper to toggle a stage in the filter
   const toggleStage = (stageId: number) => {
@@ -106,6 +124,7 @@ export function TimetableView({ days, stages, acts, favorites: initialFavorites 
                                     isFavorite={true}
                                     onToggleFavorite={() => handleToggleFavorite(act.id)}
                                     showDay
+                                    usersWhoFavorited={actsFavorites[activeDay]?.[act.id] || []}
                                 />
                             ))}
                       </div>
@@ -123,6 +142,7 @@ export function TimetableView({ days, stages, acts, favorites: initialFavorites 
                               act={act}
                               isFavorite={favorites.includes(act.id)}
                               onToggleFavorite={() => handleToggleFavorite(act.id)}
+                              usersWhoFavorited={actsFavorites[activeDay]?.[act.id] || []}
                           />
                       ))
                   ) : (

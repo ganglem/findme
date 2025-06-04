@@ -60,26 +60,48 @@ export async function getFavorites() {
   return { favorites: data.map((fav) => fav.act_id) }
 }
 
-export async function getUsersWhoFavoritedAct(actId: number): Promise<{ id: string; username: string; avatarUrl: string}[]> {
+export async function getAllFavoritesForDay(day: string): Promise<Record<number, { id: string; username: string; avatarUrl: string}[]>> {
   const supabase = await createClient()
 
   const {
-      data: { user },
+    data: { user },
   } = await supabase.auth.getUser()
   if (!user) return []
 
-  const { data: favoritedData, error } = await supabase
-      .from("user_favorites")
-      .select("user_id")
-      .eq("act_id", actId)
-      .neq("user_id", user.id)
+  const { data, error } = await supabase
+    .from("acts")
+    .select("id")
+    .eq("day", day)
 
   if (error) {
-      console.error("Error fetching users who favorited act:", error)
+    console.error("Error fetching acts for day:", error)
+    return []
+  }
+
+  if (!data || data.length === 0) {
+    console.warn("No acts found for the specified day.")
+    return []
+  }
+
+  const actIds = data.map((act) => act.id)
+
+  const { data: favoritesData, error: favoritesError } = await supabase
+    .from("user_favorites")
+    .select("user_id, act_id")
+    .in("act_id", actIds)
+    .neq("user_id", user.id)
+
+  if (favoritesError) {
+    console.error("Error fetching favorites for day:", favoritesError)
+    return []
+  }
+
+  if (!favoritesData || favoritesData.length === 0) {
+      console.warn("No favorites found for the specified day.")
       return []
   }
 
-  const userIds = favoritedData.map((fav) => fav.user_id)
+  const userIds = favoritesData.map((fav) => fav.user_id)
 
   const { data: usersData, error: usersError } = await supabase
       .from("profiles")
@@ -87,18 +109,25 @@ export async function getUsersWhoFavoritedAct(actId: number): Promise<{ id: stri
       .in("id", userIds)
 
   if (usersError) {
-      console.error("Error fetching users:", usersError)
+      console.error("Error fetching users for favorites:", usersError)
       return []
   }
 
-  if (!usersData || usersData.length === 0) {
-      console.warn("No users found who favorited this act.")
-      return []
-  }
+  const favoritesByAct: Record<number, { id: string; username: string; avatarUrl: string}[]> = {}
 
-  return usersData.map((user) => ({
-    id: user.id,
-    username: user.username,
-    avatarUrl: user.avatar_url
-  }))
+  favoritesData.forEach((fav) => {
+      if (!favoritesByAct[fav.act_id]) {
+        favoritesByAct[fav.act_id] = []
+      }
+      const user = usersData.find((u) => u.id === fav.user_id)
+      if (user) {
+        favoritesByAct[fav.act_id].push({
+            id: user.id,
+            username: user.username,
+            avatarUrl: user.avatar_url || "",
+        })
+      }
+  })
+
+  return favoritesByAct
 }

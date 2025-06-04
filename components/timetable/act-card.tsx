@@ -5,8 +5,7 @@ import {Card, CardContent} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
 import {cn} from "@/lib/utils";
 import {Heart} from "lucide-react";
-import React, {useEffect} from "react";
-import {getUsersWhoFavoritedAct} from "@/actions/favorites";
+import React from "react";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 
@@ -15,17 +14,10 @@ interface ActCardProps {
     isFavorite: boolean
     onToggleFavorite: () => void
     showDay?: boolean
+    usersWhoFavorited: { id: string; username: string; avatarUrl: string}[]
 }
 
-export default function ActCard({ act, isFavorite, onToggleFavorite, showDay = false }: ActCardProps) {
-
-    const [usersWhoFavorited, setUsersWhoFavorited] = React.useState<{ id: string; username: string; avatarUrl: string}[]>([]);
-
-    useEffect(() => {
-        getUsersWhoFavoritedAct(act.id).then((users) => {
-            setUsersWhoFavorited(users);
-        })
-    }, []);
+export default function ActCard({ act, isFavorite, onToggleFavorite, showDay = false, usersWhoFavorited }: ActCardProps) {
 
     return (
         <Card>
@@ -52,7 +44,7 @@ export default function ActCard({ act, isFavorite, onToggleFavorite, showDay = f
                         </Button>
                     </div>
                     <div className="flex flex-row flex-wrap gap-2 w-full justify-start">
-                        {usersWhoFavorited.length > 0 && usersWhoFavorited.map((user) => (
+                        {usersWhoFavorited && usersWhoFavorited.length > 0 && usersWhoFavorited.map((user) => (
                             <Avatar key={user.id}>
                                 <Popover>
                                     <PopoverTrigger><AvatarImage
