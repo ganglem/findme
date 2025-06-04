@@ -28,6 +28,7 @@
         --success:                    146 100% 50%;
         --success-foreground:         146 100% 50%;
         --border:                     0 0% 100%;
+        --border-transparent:         0 0% 100% / 0%;
         --input:                      0 0% 100%;
         --ring:                       0 0% 100%;
         --chart-1:                    0 0% 100%;
@@ -77,6 +78,7 @@
         --success:                    146 100% 50%;
         --success-foreground:         146 100% 50%;
         --border:                     0 0% 92.1569%;
+        --border-transparent:         0 0% 92.1569% / 0%;
         --input:                      0 0% 92.1569%;
         --ring:                       0 0% 92.1569%;
         --chart-1:                    17.5610 100.0000% 91.9608%;
@@ -125,7 +127,6 @@
         font-family: var(--font-nexa), sans-serif;
         font-weight: 900;
 
-        @apply border-border;
     }
 
     input,
