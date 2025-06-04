@@ -72,6 +72,7 @@ export async function getUsersWhoFavoritedAct(actId: number): Promise<{ id: stri
       .from("user_favorites")
       .select("user_id")
       .eq("act_id", actId)
+      .neq("user_id", user.id)
 
   if (error) {
       console.error("Error fetching users who favorited act:", error)
