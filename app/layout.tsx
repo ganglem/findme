@@ -10,7 +10,6 @@ const inter = Inter({subsets: ["latin"]})
 export const metadata: Metadata = {
     title:       "Find.me - Ikarus Festival",
     description: "Finde deine Freunde und Lieblingsacts auf dem Ikarus Festival",
-    generator:   'v0.dev'
 }
 
 interface RootLayoutProps {
@@ -21,6 +20,7 @@ export default function RootLayout({children}: RootLayoutProps) {
     return (
         <html lang="de">
         <head>
+            <link rel="manifest" href="/manifest.json"/>
             <link rel="stylesheet" href="https://use.typekit.net/exp6oyj.css"/>
             <meta name="viewport" content="width=device-width, initial-scale=1"/>
         </head>

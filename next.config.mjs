@@ -1,5 +1,8 @@
+import withPWA from 'next-pwa'
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  dest: "public",
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -14,6 +17,9 @@ const nextConfig = {
       bodySizeLimit: '20mb',
     },
   },
+  ...withPWA({
+    dest: 'public',
+  })
 }
 
 export default nextConfig

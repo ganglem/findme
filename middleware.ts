@@ -15,8 +15,10 @@ export async function middleware(req: NextRequest) {
     // Definiere geschützte und öffentliche Routen
     const isAuthRoute = req.nextUrl.pathname.startsWith("/auth")
     const isImageRoute = req.nextUrl.pathname.startsWith("/images")
+    const isIconRoute = req.nextUrl.pathname.startsWith("/icons")
     const isApiRoute = req.nextUrl.pathname.startsWith("/api")
-    const isPublicRoute = isAuthRoute || isApiRoute || isImageRoute
+    const isManifestRoute = req.nextUrl.pathname.startsWith("/manifest.json")
+    const isPublicRoute = isAuthRoute || isApiRoute || isImageRoute || isIconRoute || isManifestRoute
 
     // Debugging-Informationen
     console.log("Middleware:", {
