@@ -5,12 +5,12 @@ import Link from "next/link";
 import Image from "next/image";
 
 export default async function RegisterPage() {
-    const supabase = createClient()
+    const supabase = await createClient()
     const {
-        data: {session},
-    } = await supabase.auth.getSession()
+        data: {user},
+    } = await supabase.auth.getUser()
 
-    if (session) {
+    if (user) {
         redirect("/")
     }
 

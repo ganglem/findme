@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server"
 import { revalidatePath } from "next/cache"
 
 export async function updateLocation(stageId: number) {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const {
     data: { user },
@@ -29,7 +29,7 @@ export async function updateLocation(stageId: number) {
 }
 
 export async function getUserLocations() {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { data, error } = await supabase
     .from("user_locations")

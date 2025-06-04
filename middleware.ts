@@ -7,10 +7,9 @@ export async function middleware(req: NextRequest) {
     const res = NextResponse.next()
     const supabase = createMiddlewareClient({req, res})
 
-    // Hole die aktuelle Session
     const {
-        data: {session},
-    } = await supabase.auth.getSession()
+        data: {user},
+    } = await supabase.auth.getUser()
 
     // Definiere geschützte und öffentliche Routen
     const isAuthRoute = req.nextUrl.pathname.startsWith("/auth")
@@ -20,21 +19,14 @@ export async function middleware(req: NextRequest) {
     const isManifestRoute = req.nextUrl.pathname.startsWith("/manifest.json")
     const isPublicRoute = isAuthRoute || isApiRoute || isImageRoute || isIconRoute || isManifestRoute
 
-    // Debugging-Informationen
-    console.log("Middleware:", {
-        path:       req.nextUrl.pathname,
-        isAuthRoute,
-        hasSession: !!session,
-    })
-
     // Wenn der Benutzer nicht angemeldet ist und versucht, auf eine geschützte Route zuzugreifen
-    if (!session && !isPublicRoute) {
+    if (!user && !isPublicRoute) {
         const redirectUrl = new URL("/auth/login", req.url)
         return NextResponse.redirect(redirectUrl)
     }
 
     // Wenn der Benutzer angemeldet ist und versucht, auf eine Auth-Route zuzugreifen
-    if (session && isAuthRoute) {
+    if (user && isAuthRoute) {
         const redirectUrl = new URL("/", req.url)
         return NextResponse.redirect(redirectUrl)
     }

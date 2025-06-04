@@ -5,12 +5,12 @@ import {getFavorites} from "@/actions/favorites"
 import Image from "next/image"
 
 export default async function TimetablePage() {
-    const supabase = createClient()
+    const supabase = await createClient()
     const {
-        data: {session},
-    } = await supabase.auth.getSession()
+        data: {user},
+    } = await supabase.auth.getUser()
 
-    if (!session) {
+    if (!user) {
         redirect("/auth/login")
     }
 
