@@ -188,9 +188,20 @@ export function LiveTracker({stages, locations: initialLocations, userId}: LiveT
                                                                 <div>
                                                                     {/* ...other content... */}
                                                                     <div className="text-xs text-muted-foreground">
-                                                                        {location.profiles.username} Zuletzt aktiv: {location.timestamp ? new Date(location.timestamp).toLocaleString("de-DE", {
-                                                                        hour: "2-digit", minute: "2-digit"
-                                                                    }) : "Unbekannt"}
+                                                                        {location.profiles.username}:
+                                                                        {location.timestamp ? (() => {
+                                                                            const now = new Date();
+                                                                            const updated = new Date(location.timestamp);
+                                                                            const diffMs = now.getTime() - updated.getTime();
+                                                                            const diffMins = Math.floor(diffMs / 60000);
+                                                                        
+                                                                        if (diffMins < 60) {
+                                                                            return ` letztes Update vor ${diffMins} Minute${diffMins !== 1 ? "n" : ""}`;
+                                                                        } else {
+                                                                            return ` letztes Update um ${updated.toLocaleString("de-DE", { hour: "2-digit", minute: "2-digit" })}`;
+                                                                        }
+
+                                                                    })() : "Unbekannt"}
                                                                     </div>
                                                                 </div>
                                                             </PopoverContent>
