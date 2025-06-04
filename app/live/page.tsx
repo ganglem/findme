@@ -6,12 +6,12 @@ import {getUserLocations} from "@/actions/location"
 import Image from "next/image";
 
 export default async function LivePage() {
-    const supabase = createClient()
+    const supabase = await createClient()
     const {
-        data: {session},
-    } = await supabase.auth.getSession()
+        data: {user},
+    } = await supabase.auth.getUser()
 
-    if (!session) {
+    if (!user) {
         redirect("/auth/login")
     }
 
@@ -66,7 +66,7 @@ export default async function LivePage() {
                 />
                 <h1 className="text-2xl font-bold">Live Tracker</h1>
             </div>
-            <LiveTracker stages={stagesWithCurrentActs} locations={locations} userId={session.user.id}/>
+            <LiveTracker stages={stagesWithCurrentActs} locations={locations} userId={user.id}/>
         </div>
     )
 }

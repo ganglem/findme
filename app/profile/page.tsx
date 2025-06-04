@@ -7,16 +7,16 @@ import {Profile} from "@/lib/supabase/database.types";
 import Image from "next/image";
 
 export default async function ProfilePage() {
-    const supabase = createClient()
+    const supabase = await createClient()
     const {
-        data: {session},
-    } = await supabase.auth.getSession()
+        data: {user},
+    } = await supabase.auth.getUser()
 
-    if (!session) {
+    if (!user) {
         redirect("/auth/login")
     }
 
-    const {data: profile} = await supabase.from("profiles").select().eq("id", session.user.id).single<Profile>()
+    const {data: profile} = await supabase.from("profiles").select().eq("id", user.id).single<Profile>()
 
     return (
         <div className="space-y-8">

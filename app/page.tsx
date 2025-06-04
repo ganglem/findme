@@ -8,15 +8,12 @@ import {Calendar, Radio, User} from "lucide-react"
 export const dynamic = "force-dynamic"
 
 export default async function Home() {
-    const supabase = createClient()
+    const supabase = await createClient()
     const {
-        data: {session},
-    } = await supabase.auth.getSession()
+        data: {user},
+    } = await supabase.auth.getUser()
 
-    // Debugging-Informationen
-    console.log("Home Page - Session:", !!session)
-
-    if (!session) {
+    if (!user) {
         console.log("Keine Session gefunden, leite zum Login weiter...")
         redirect("/auth/login")
     }

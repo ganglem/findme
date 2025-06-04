@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server"
 import { revalidatePath } from "next/cache"
 
 export async function toggleFavorite(actId: number) {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const {
     data: { user },
@@ -43,7 +43,7 @@ export async function toggleFavorite(actId: number) {
 }
 
 export async function getFavorites() {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const {
     data: { user },
