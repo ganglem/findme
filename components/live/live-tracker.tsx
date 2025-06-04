@@ -120,7 +120,7 @@ export function LiveTracker({stages, locations: initialLocations, userId}: LiveT
                             <Card key={stage.id}>
                                 <div className="flex flex-row items-start p-4 gap-6">
                                     {/* Left column */}
-                                    <div className="flex flex-col w-[200px] space-y-3 flex-shrink-0">
+                                    <div className="flex flex-col max-w-[50%] space-y-3 flex-shrink-0">
                                         <CardHeader className="p-0">
                                             <CardTitle className="text-lg">{stage.name}</CardTitle>
                                         </CardHeader>
@@ -159,7 +159,7 @@ export function LiveTracker({stages, locations: initialLocations, userId}: LiveT
                                         )}
                                     </div>
                                     {/* Right column: Button and avatars */}
-                                    <div className="flex flex-col items-center justify-between min-w-[100px] h-full w-full space-y-4">
+                                    <div className="flex flex-col items-center justify-between max-w-[50%] h-full w-full space-y-4">
                                         <Button
                                             variant={userLocation?.stage_id === stage.id ? "default" : "outline"}
                                             className={cn(
