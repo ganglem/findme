@@ -83,13 +83,10 @@ export function ProfileForm({ profile, updateProfile }: ProfileFormProps) {
             className="hidden"
             onChange={handleAvatarChange}
           />
-          <Label
-              htmlFor="avatar"
-              className="flex items-center justify-center px-3 py-1.5 text-base border-4 rounded-none cursor-pointer hover:bg-transparent hover:opacity-70"
-          >
-            <Upload className="w-6 h-6 mr-2" />
-            Profilbild ändern
-          </Label>
+           <Button variant="outline" onClick={() => document.getElementById("avatar")?.click()}>
+             <Upload className="w-6 h-6 mr-2" />
+             Profilbild ändern
+           </Button>
 
         </div>
       </div>
