@@ -10,7 +10,7 @@ export default function Loading() {
                 <Skeleton className="h-24 w-[50%]"/>
             </div>
         </Card>
-        {[0, 1, 2, 3].map(() => <Card className="p-4">
+        {[0, 1, 2, 3].map((index) => <Card key={index} className="p-4">
             <div className="flex flex-row w-full h-full space-x-4">
                 <div className="flex flex-col h-full w-[50%]">
                     <Skeleton className="h-6 w-full mb-2"/>
