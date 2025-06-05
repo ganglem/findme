@@ -54,19 +54,5 @@ export default async function LivePage() {
         }
     })
 
-    return (
-        <div className="space-y-6">
-            <div className="flex items-center gap-3">
-                <Image
-                    src="/images/icon.svg"
-                    alt="Ikarus Festival Logo"
-                    width={36}
-                    height={36}
-                    className="h-[3em] w-auto align-middle"
-                />
-                <h1 className="text-2xl font-bold">Live Tracker</h1>
-            </div>
-            <LiveTracker stages={stagesWithCurrentActs} locations={locations} userId={user.id}/>
-        </div>
-    )
+    return <LiveTracker stages={stagesWithCurrentActs} locations={locations} userId={user.id}/>
 }
