@@ -123,6 +123,12 @@ body {
     background-attachment: fixed;
 }
 
+html, body {
+    overscroll-behavior-x: none;
+    overscroll-behavior-y: none;
+}
+
+
 *, ::before, ::after {
     font-family: var(--font-nexa), sans-serif;
     font-weight: 900;
