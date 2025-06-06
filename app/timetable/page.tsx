@@ -2,7 +2,6 @@ import {createClient} from "@/lib/supabase/server"
 import {redirect} from "next/navigation"
 import {TimetableView} from "@/components/timetable/timetable-view"
 import {getFavorites} from "@/actions/favorites"
-import Image from "next/image"
 
 export default async function TimetablePage() {
     const supabase = await createClient()
@@ -51,19 +50,5 @@ export default async function TimetablePage() {
         {name: "Sonntag", date: "2023-05-28"},
     ]
 
-    return (
-        <div className="space-y-6 flex-col flex">
-            <div className="flex items-center gap-3">
-                <Image
-                    src="/images/icon.svg"
-                    alt="Ikarus Festival Logo"
-                    width={36}
-                    height={36}
-                    className="h-[3em] w-auto align-middle"
-                />
-                <h1 className="text-2xl font-bold">Timetable</h1>
-            </div>
-            <TimetableView days={days} stages={stages} acts={acts} favorites={favorites}/>
-        </div>
-    )
+    return <TimetableView days={days} stages={stages} acts={acts} favorites={favorites}/>
 }
