@@ -1,0 +1,49 @@
+_format_version: "2.1"
+_transform: true
+
+# Simple declarative Kong config for Supabase.
+# Routes are mounted under standard paths so supabase-js works out of the box.
+
+services:
+  - name: auth
+    url: http://supabase-auth:9999/
+    routes:
+      - name: auth
+        paths:
+          - /auth/v1
+        strip_path: false
+
+  - name: rest
+    url: http://supabase-rest:3000/
+    routes:
+      - name: rest
+        paths:
+          - /rest/v1
+        strip_path: false
+
+  - name: realtime
+    url: http://supabase-realtime:4000/
+    routes:
+      - name: realtime
+        paths:
+          - /realtime/v1
+        strip_path: false
+
+  - name: storage
+    url: http://supabase-storage:5000/
+    routes:
+      - name: storage
+        paths:
+          - /storage/v1
+        strip_path: false
+
+  - name: meta
+    url: http://supabase-meta:8080/
+    routes:
+      - name: meta
+        paths:
+          - /pg
+        strip_path: false
+
+# Key auth / JWT validation are done by individual services; Kong is only routing here.
+
